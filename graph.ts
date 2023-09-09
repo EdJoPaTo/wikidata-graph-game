@@ -1,5 +1,6 @@
 export class Graph {
 	#labels = new Map<string, string>();
+	#shapes = new Map<string, string>();
 
 	#links = new Map<string, string[]>();
 
@@ -7,6 +8,10 @@ export class Graph {
 		if (label) {
 			this.#labels.set(key, label);
 		}
+	}
+
+	setShape(key: string, shape: string): void {
+		this.#shapes.set(key, shape);
 	}
 
 	addLink(start: string, end: string): void {
@@ -23,6 +28,8 @@ export class Graph {
 		const out: string[] = [
 			...[...this.#labels]
 				.map(([key, label]) => `${key}: ${label}`),
+			...[...this.#shapes]
+				.map(([key, label]) => `${key}.shape: ${label}`),
 			...[...this.#links]
 				.flatMap(([start, ends]) => ends.map((end) => `${start} -> ${end}`)),
 		];

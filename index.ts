@@ -5,12 +5,12 @@ import { Parents } from "./parents.ts";
 import * as store from "./store.ts";
 
 const TARGET = "Q83483"; // sea urchin
-const GUESSES = [
+const GUESSES: readonly ItemId[] = [
 	"Q25265", // Felidae (from house cat)
 	"Q140", // lion
 	"Q11687", // Springspinne
 	"Q611843", // Octopus
-] as const;
+];
 
 async function cacheWithParents(ids: ItemId[]): Promise<void> {
 	const missing = await store.cache(ids);
@@ -38,9 +38,18 @@ for (const guess of GUESSES) {
 	console.log("debug parent", guess);
 	parents.get(guess)!.debug();
 }
+const targetParents = parents.get(TARGET)!;
 
 const graph = new Graph();
 const added = new Set<ItemId>();
+
+graph.setShape(TARGET, "hexagon");
+graph.setLabel(
+	TARGET,
+	GUESSES.includes(TARGET)
+		? bestEffortLabel(store.getCached(TARGET)!)
+		: "guess me",
+);
 
 function addGuess(id: ItemId) {
 	if (added.has(id)) return;
@@ -51,7 +60,18 @@ function addGuess(id: ItemId) {
 
 	const idParents = parents.get(id)!;
 
-	for (const other of GUESSES) {
+	{
+		const commonParents = idParents.getCommonMinimum(targetParents);
+		for (const parent of commonParents) {
+			if (parent === id) continue;
+			graph.setLabel(parent, bestEffortLabel(store.getCached(parent)!));
+			graph.addLink(parent, id);
+
+			graph.addLink(parent, TARGET);
+		}
+	}
+
+	for (const other of added) {
 		if (other === id) continue;
 		const otherParents = parents.get(other)!;
 
