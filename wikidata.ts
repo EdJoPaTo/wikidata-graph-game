@@ -95,3 +95,9 @@ export function getItemParents(item: Item): ItemId[] {
 		...getWikibaseEntityIdClaimValues(item.claims![SUBCLASS_OF]),
 	];
 }
+
+export function bestEffortLabel(item: Item): string | undefined {
+	const { labels } = item;
+	if (!labels) return undefined;
+	return labels.de?.value ?? labels.en?.value;
+}

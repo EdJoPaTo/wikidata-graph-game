@@ -1,12 +1,15 @@
 import { type ItemId } from "https://esm.sh/wikibase-sdk@9.2.2";
-import { getItemParentTaxons } from "./wikidata.ts";
+import { bestEffortLabel, getItemParentTaxons } from "./wikidata.ts";
 import { Graph } from "./graph.ts";
+import { Parents } from "./parents.ts";
 import * as store from "./store.ts";
 
 const TARGET = "Q83483"; // sea urchin
 const GUESSES = [
 	"Q25265", // Felidae (from house cat)
-	"Q21179", // Sønderborg
+	"Q140", // lion
+	"Q11687", // Springspinne
+	"Q611843", // Octopus
 ] as const;
 
 async function cacheWithParents(ids: ItemId[]): Promise<void> {
@@ -27,28 +30,44 @@ store.save();
 
 store.debug();
 
+const parents = new Map<ItemId, Parents>();
+parents.set(TARGET, new Parents(TARGET));
+for (const guess of GUESSES) {
+	parents.set(guess, new Parents(guess));
+
+	console.log("debug parent", guess);
+	parents.get(guess)!.debug();
+}
+
 const graph = new Graph();
 const added = new Set<ItemId>();
 
-function addParent(id: ItemId) {
+function addGuess(id: ItemId) {
 	if (added.has(id)) return;
-	added.add(id);
+	console.log("addNode", id, [...added.keys()]);
 
 	const item = store.getCached(id)!;
-	const label = item.labels?.de?.value;
-	if (label) {
-		graph.setLabel(id, label);
+	graph.setLabel(id, bestEffortLabel(item));
+
+	const idParents = parents.get(id)!;
+
+	for (const other of GUESSES) {
+		if (other === id) continue;
+		const otherParents = parents.get(other)!;
+
+		const commonParents = idParents.getCommonMinimum(otherParents);
+		for (const parent of commonParents) {
+			if (parent === id) continue;
+			graph.setLabel(parent, bestEffortLabel(store.getCached(parent)!));
+			graph.addLink(parent, id);
+		}
 	}
 
-	const parents = getItemParentTaxons(item);
-	for (const parent of parents) {
-		graph.addLink(parent, id);
-		addParent(parent);
-	}
+	added.add(id);
 }
 
 for (const guess of GUESSES) {
-	addParent(guess);
+	addGuess(guess);
 }
 
 Deno.writeTextFileSync("graph.d2", graph.build());
