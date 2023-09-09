@@ -1,6 +1,7 @@
 import { type ItemId } from "https://esm.sh/wikibase-sdk@9.2.2";
-import * as store from "./store.ts";
 import { getItemParentTaxons } from "./wikidata.ts";
+import { Graph } from "./graph.ts";
+import * as store from "./store.ts";
 
 const TARGET = "Q83483"; // sea urchin
 const GUESSES = [
@@ -25,4 +26,28 @@ await cacheWithParents([TARGET, ...GUESSES]);
 
 store.debug();
 
-// console.log(await getEntities([TARGET, ...GUESSES]));
+const graph = new Graph();
+const added = new Set<ItemId>();
+
+function addParent(id: ItemId) {
+	if (added.has(id)) return;
+	added.add(id);
+
+	const item = store.getCached(id)!;
+	const label = item.labels?.de?.value;
+	if (label) {
+		graph.setLabel(id, label);
+	}
+
+	const parents = getItemParentTaxons(item);
+	for (const parent of parents) {
+		graph.addLink(parent, id);
+		addParent(parent);
+	}
+}
+
+for (const guess of GUESSES) {
+	addParent(guess);
+}
+
+Deno.writeTextFileSync("graph.d2", graph.build());
