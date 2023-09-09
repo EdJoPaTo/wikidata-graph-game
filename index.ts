@@ -10,7 +10,6 @@ const GUESSES = [
 ] as const;
 
 async function cacheWithParents(ids: ItemId[]): Promise<void> {
-	console.log("cacheWithParents", ids);
 	const missing = await store.cache(ids);
 	const next: ItemId[] = [];
 	for (const id of missing) {
@@ -22,7 +21,9 @@ async function cacheWithParents(ids: ItemId[]): Promise<void> {
 	}
 }
 
+store.load();
 await cacheWithParents([TARGET, ...GUESSES]);
+store.save();
 
 store.debug();
 

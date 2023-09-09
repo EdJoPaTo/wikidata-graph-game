@@ -4,6 +4,24 @@ import { getEntities } from "./wikidata.ts";
 
 const store = new Map<ItemId, Item>();
 
+export function load(): void {
+	try {
+		const items = JSON.parse(Deno.readTextFileSync("store.json")) as Item[];
+		for (const item of items) {
+			store.set(item.id, item);
+		}
+	} catch {
+		// Ignore missing or unparsable file
+	}
+}
+
+export function save(): void {
+	const items = [...store.values()];
+	items.sort((a, b) => Number(a.id.slice(1)) - Number(b.id.slice(1)));
+	const content = JSON.stringify(items, undefined, "\t") + "\n";
+	Deno.writeTextFileSync("store.json", content);
+}
+
 /// Returns the ItemIds that were missing before the call
 export async function cache(ids: ItemId[]): Promise<ItemId[]> {
 	const missing = ids
