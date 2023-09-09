@@ -7,6 +7,7 @@ import {
 	type PropertyClaims,
 	simplifySparqlResults,
 	type SparqlResults,
+	type StringSnakValue,
 	WBK,
 	type WikibaseEntityIdSnakValue,
 } from "https://esm.sh/wikibase-sdk@9.2.2";
@@ -97,7 +98,24 @@ export function getItemParents(item: Item): ItemId[] {
 }
 
 export function bestEffortLabel(item: Item): string | undefined {
-	const { labels } = item;
-	if (!labels) return undefined;
-	return labels.de?.value ?? labels.en?.value;
+	const taxon = item.claims?.["P225"]
+		?.map((o) => o.mainsnak.datavalue)
+		.find((o): o is StringSnakValue => o?.type === "string")
+		?.value;
+
+	const human = item.labels?.de?.value ?? item.labels?.en?.value;
+
+	if (human && taxon) {
+		return human === taxon ? taxon : `${taxon} (${human})`;
+	}
+
+	if (taxon) {
+		return taxon;
+	}
+
+	if (human) {
+		return human;
+	}
+
+	return undefined;
 }
