@@ -79,3 +79,12 @@ graph.setLabel(
 );
 
 Deno.writeTextFileSync("graph.d2", graph.build());
+const command = new Deno.Command("d2", {
+	args: [
+		"--dark-theme=201",
+		"graph.d2",
+	],
+}).outputSync();
+if (!command.success) {
+	throw new Error("d2 failed");
+}
