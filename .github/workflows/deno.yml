@@ -26,3 +26,4 @@ jobs:
 
       - run: deno cache *.ts
       - run: deno check *.ts
+      - run: deno test
