@@ -28,20 +28,36 @@ store.load();
 await cacheWithParents([TARGET, ...GUESSES]);
 store.save();
 
-store.debug();
-
-const parents = new Map<ItemId, Parents>();
-parents.set(TARGET, new Parents(TARGET));
-for (const guess of GUESSES) {
-	parents.set(guess, new Parents(guess));
-
-	console.log("debug parent", guess);
-	parents.get(guess)!.debug();
-}
-const targetParents = parents.get(TARGET)!;
-
 const graph = new Graph();
-const added = new Set<ItemId>();
+const interesting = new Set<ItemId>([TARGET, ...GUESSES]);
+
+for (const aId of interesting) {
+	const aParents = new Parents(aId);
+	for (const bId of interesting) {
+		if (aId === bId) continue;
+		const bParents = new Parents(bId);
+		const commonParents = aParents.getCommonMinimumDistance(bParents);
+		for (const parent of commonParents) {
+			interesting.add(parent);
+		}
+	}
+}
+
+for (const id of interesting) {
+	const item = store.getCached(id)!;
+	graph.setLabel(id, bestEffortLabel(item));
+
+	const parents = new Parents(id).getMinimumDistance(
+		[...interesting].filter((o) => o !== id),
+	);
+	for (const parent of parents) {
+		graph.addLink(parent, id);
+	}
+}
+
+for (const id of GUESSES) {
+	graph.setShape(id, "oval");
+}
 
 graph.setShape(TARGET, "hexagon");
 graph.setLabel(
@@ -50,44 +66,5 @@ graph.setLabel(
 		? bestEffortLabel(store.getCached(TARGET)!)
 		: "guess me",
 );
-
-function addGuess(id: ItemId) {
-	if (added.has(id)) return;
-	console.log("addNode", id, [...added.keys()]);
-
-	const item = store.getCached(id)!;
-	graph.setLabel(id, bestEffortLabel(item));
-
-	const idParents = parents.get(id)!;
-
-	{
-		const commonParents = idParents.getCommonMinimum(targetParents);
-		for (const parent of commonParents) {
-			if (parent === id) continue;
-			graph.setLabel(parent, bestEffortLabel(store.getCached(parent)!));
-			graph.addLink(parent, id);
-
-			graph.addLink(parent, TARGET);
-		}
-	}
-
-	for (const other of added) {
-		if (other === id) continue;
-		const otherParents = parents.get(other)!;
-
-		const commonParents = idParents.getCommonMinimum(otherParents);
-		for (const parent of commonParents) {
-			if (parent === id) continue;
-			graph.setLabel(parent, bestEffortLabel(store.getCached(parent)!));
-			graph.addLink(parent, id);
-		}
-	}
-
-	added.add(id);
-}
-
-for (const guess of GUESSES) {
-	addGuess(guess);
-}
 
 Deno.writeTextFileSync("graph.d2", graph.build());

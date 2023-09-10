@@ -34,34 +34,33 @@ export class Parents {
 		return this.#items.get(id);
 	}
 
-	getCommonMinimum(other: Parents): ItemId[] {
-		for (let distance = 0;; distance++) {
-			const onDistance = this.#distances.get(distance) ?? [];
-			if (onDistance.length === 0) {
-				return [];
+	getMinimumDistance(ids: ItemId[]): ItemId[] {
+		let hitDistance = Number.POSITIVE_INFINITY;
+		let hits: ItemId[] = [];
+
+		for (const item of ids) {
+			const hit = this.#items.get(item);
+			if (hit === undefined) {
+				continue;
 			}
 
-			let hitDistance = Number.POSITIVE_INFINITY;
-			let hits: ItemId[] = [];
-
-			for (const item of onDistance) {
-				const hit = other.#items.get(item);
-				if (hit === undefined) {
-					continue;
-				}
-
-				if (hit < hitDistance) {
-					hitDistance = hit;
-					hits = [item];
-				} else if (hit === hitDistance) {
-					hits.push(item);
-				}
-			}
-
-			if (hits.length > 0) {
-				return hits;
+			if (hit < hitDistance) {
+				hitDistance = hit;
+				hits = [item];
+			} else if (hit === hitDistance) {
+				hits.push(item);
 			}
 		}
+
+		return hits;
+	}
+
+	getCommon(other: Parents): ItemId[] {
+		return [...other.#items.keys()].filter((o) => this.#items.has(o));
+	}
+
+	getCommonMinimumDistance(other: Parents): ItemId[] {
+		return this.getMinimumDistance(this.getCommon(other));
 	}
 
 	debug(): void {

@@ -15,6 +15,8 @@ export class Graph {
 	}
 
 	addLink(start: string, end: string): void {
+		if (start === end) return;
+
 		const onStart = this.#links.get(start) ?? [];
 		if (onStart.includes(end)) {
 			return;
