@@ -7,6 +7,7 @@ import * as store from "./store.ts";
 const TARGET = "Q83483"; // sea urchin
 const GUESSES: readonly ItemId[] = [
 	"Q123141", // Goldfish
+	"Q127470", // Seegurke
 	"Q25349", // Starfish
 	"Q25349", // Starfish
 	"Q25407", // Bumble bee
@@ -21,6 +22,7 @@ const GUESSES: readonly ItemId[] = [
 	// "Q611843", // Octopus
 	// "Q6120", // Hedgehog
 	// "Q783794", // company
+	// "Q830", // cattle
 ];
 
 async function cacheWithParents(ids: ItemId[]): Promise<void> {
