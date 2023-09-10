@@ -2,7 +2,7 @@ export class Graph {
 	#labels = new Map<string, string>();
 	#shapes = new Map<string, string>();
 
-	#links = new Map<string, string[]>();
+	#links = new Set<string>();
 
 	setLabel(key: string, label: string | undefined): void {
 		if (label) {
@@ -14,16 +14,15 @@ export class Graph {
 		this.#shapes.set(key, shape);
 	}
 
-	addLink(start: string, end: string): void {
+	addLink(start: string, end: string, comment?: string): void {
 		if (start === end) return;
 
-		const onStart = this.#links.get(start) ?? [];
-		if (onStart.includes(end)) {
-			return;
+		let link = `${start} -> ${end}`;
+		if (comment) {
+			link += ": " + comment;
 		}
 
-		onStart.push(end);
-		this.#links.set(start, onStart);
+		this.#links.add(link);
 	}
 
 	build(): string {
@@ -32,8 +31,7 @@ export class Graph {
 				.map(([key, label]) => `${key}: ${label}`),
 			...[...this.#shapes]
 				.map(([key, label]) => `${key}.shape: ${label}`),
-			...[...this.#links]
-				.flatMap(([start, ends]) => ends.map((end) => `${start} -> ${end}`)),
+			...this.#links,
 		];
 		return out.join("\n") + "\n";
 	}
