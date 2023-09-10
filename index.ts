@@ -6,10 +6,21 @@ import * as store from "./store.ts";
 
 const TARGET = "Q83483"; // sea urchin
 const GUESSES: readonly ItemId[] = [
-	"Q25265", // Felidae (from house cat)
-	"Q140", // lion
-	"Q11687", // Springspinne
-	"Q611843", // Octopus
+	"Q123141", // Goldfish
+	"Q25349", // Starfish
+	"Q25349", // Starfish
+	"Q25407", // Bumble bee
+	"Q2699803", // Sea gull
+	"Q53663", // Salamander
+	// "Q11019", // machine
+	// "Q11687", // Springspinne
+	// "Q13235160", // manufacturer
+	// "Q140", // lion
+	// "Q146", // house cat
+	// "Q25265", // Felidae (from house cat)
+	// "Q611843", // Octopus
+	// "Q6120", // Hedgehog
+	// "Q783794", // company
 ];
 
 async function cacheWithParents(ids: ItemId[]): Promise<void> {
