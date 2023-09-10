@@ -1,8 +1,8 @@
 import { type ItemId } from "https://esm.sh/wikibase-sdk@9.2.2";
-import { bestEffortLabel, getItemParentTaxons } from "./wikidata.ts";
+import { bestEffortLabel, getItemParents } from "./wikidata.ts";
 import { getCached } from "./store.ts";
 
-const getParents = (id: ItemId) => getItemParentTaxons(getCached(id)!);
+const getParents = (id: ItemId) => getItemParents(getCached(id)!);
 
 export class Parents {
 	#items = new Map<ItemId, number>();
