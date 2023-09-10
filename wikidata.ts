@@ -5,8 +5,6 @@ import {
 	type Item,
 	type ItemId,
 	type PropertyClaims,
-	simplifySparqlResults,
-	type SparqlResults,
 	type StringSnakValue,
 	WBK,
 	type WikibaseEntityIdSnakValue,
@@ -20,28 +18,6 @@ export const wdk = WBK({
 	instance: "https://www.wikidata.org",
 	sparqlEndpoint: "https://query.wikidata.org/sparql",
 });
-
-export async function sparqlQuerySimplifiedMinified(
-	query: string,
-): Promise<string[]> {
-	const url = wdk.sparqlQuery(query);
-	const response = await fetch(url, { headers });
-	const results = await response.json() as SparqlResults;
-	return simplifySparqlResults(results, { minimize: true }) as string[];
-}
-
-export async function getItemChildren(id: EntityId): Promise<EntityId[]> {
-	const query = `SELECT ?item
-	WHERE {
-		BIND (wd:${id} as ?class)
-		{ ?item wdt:P31 ?class. }
-		UNION
-		{ ?item wdt:P279 ?class. }
-	}`;
-
-	const results = await sparqlQuerySimplifiedMinified(query) as EntityId[];
-	return results;
-}
 
 interface GetEntitiesResponse {
 	entities: Record<EntityId, Entity>;
