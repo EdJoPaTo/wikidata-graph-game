@@ -1,6 +1,6 @@
 .vscode
 
 graph.d2
-graph.png
-graph.svg
+graph*.png
+graph*.svg
 store.json
