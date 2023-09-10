@@ -27,6 +27,10 @@ export async function cache(ids: ItemId[]): Promise<ItemId[]> {
 	const missing = ids
 		.filter((o) => !store.has(o))
 		.filter(arrayFilterUnique());
+	if (missing.length > 0) {
+		console.log("cache", missing.length, missing);
+	}
+
 	const entities = await getEntities(missing);
 	const items = Object.values(entities)
 		.filter((o): o is Item => o.type === "item")
