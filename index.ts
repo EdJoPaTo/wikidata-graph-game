@@ -1,5 +1,5 @@
 import { type ItemId } from "https://esm.sh/wikibase-sdk@9.2.2";
-import { bestEffortLabel, getItemParents } from "./wikidata.ts";
+import { bestEffortLabel, getItemParents } from "./simplify-item.ts";
 import { Graph } from "./graph.ts";
 import { Parents } from "./parents.ts";
 import * as store from "./store.ts";
@@ -40,10 +40,10 @@ const GUESSES: readonly ItemId[] = [
 ];
 
 async function cacheWithParents(ids: ItemId[]): Promise<void> {
-	const missing = await store.cache(ids);
+	await store.cache(ids);
 	const next: ItemId[] = [];
-	for (const id of missing) {
-		const parents = getItemParents(store.getCached(id)!);
+	for (const id of ids) {
+		const parents = getItemParents(store.getCached(id));
 		next.push(...parents);
 	}
 	if (next.length > 0) {
@@ -71,7 +71,7 @@ for (const aId of interesting) {
 }
 
 for (const id of interesting) {
-	const item = store.getCached(id)!;
+	const item = store.getCached(id);
 	graph.setLabel(id, bestEffortLabel(item));
 
 	const parents = new Parents(id).getMinimumDistance(
@@ -90,7 +90,7 @@ graph.setShape(TARGET, "hexagon");
 graph.setLabel(
 	TARGET,
 	GUESSES.includes(TARGET)
-		? bestEffortLabel(store.getCached(TARGET)!)
+		? bestEffortLabel(store.getCached(TARGET))
 		: "guess me",
 );
 

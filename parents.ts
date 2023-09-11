@@ -1,8 +1,6 @@
 import { type ItemId } from "https://esm.sh/wikibase-sdk@9.2.2";
-import { bestEffortLabel, getItemParents } from "./wikidata.ts";
 import { getCached } from "./store.ts";
-
-const getParents = (id: ItemId) => getItemParents(getCached(id)!);
+import { bestEffortLabel, getItemParents } from "./simplify-item.ts";
 
 export class Parents {
 	#items = new Map<ItemId, number>();
@@ -18,14 +16,15 @@ export class Parents {
 		}
 	}
 
-	#add(distance: number, item: ItemId) {
-		if (this.#items.has(item)) {
+	#add(distance: number, id: ItemId) {
+		if (this.#items.has(id)) {
 			return;
 		}
 
-		this.#items.set(item, distance);
+		this.#items.set(id, distance);
 
-		for (const parent of getParents(item)) {
+		const item = getCached(id);
+		for (const parent of getItemParents(item)) {
 			this.#add(distance + 1, parent);
 		}
 	}
@@ -70,7 +69,7 @@ export class Parents {
 			clone.set(
 				depth,
 				values.map((o) => {
-					const item = getCached(o)!;
+					const item = getCached(o);
 					return `${item.id} ${bestEffortLabel(item)}`;
 				}),
 			);

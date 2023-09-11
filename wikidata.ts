@@ -2,19 +2,12 @@ import {
 	type Entity,
 	type EntityId,
 	isItemId,
-	type Item,
 	type ItemId,
-	type PropertyClaims,
 	type SearchResponse,
-	type StringSnakValue,
 	WBK,
-	type WikibaseEntityIdSnakValue,
 } from "https://esm.sh/wikibase-sdk@9.2.2";
 import { cache, getCached } from "./store.ts";
-
-const SUBCLASS_OF = "P279";
-const PARENT_TAXON = "P171";
-const TAXON_NAME = "P225";
+import { getItemParents } from "./simplify-item.ts";
 
 const USER_AGENT = "github.com/EdJoPaTo/wikidata-graph-game";
 const headers = new Headers();
@@ -50,11 +43,11 @@ export async function search(
 	const relevant = results.map((o): RelevantSearchResult | undefined => {
 		const id = o.id;
 		if (!isItemId(id)) return undefined;
-		const item = getCached(id)!;
+		const item = getCached(id);
 		if (getItemParents(item).length === 0) return undefined;
 		return {
 			id,
-			taxonName: getTaxonName(item),
+			taxonName: item.taxonName[0],
 			label: o.label,
 			description: o.description,
 		};
@@ -79,53 +72,4 @@ export async function getEntities(
 		}),
 	);
 	return jsons.flatMap((entities) => Object.values(entities));
-}
-
-function getWikibaseEntityIdClaimValues(
-	o: PropertyClaims | undefined,
-): ItemId[] {
-	return (o || [])
-		.map((o) => o.mainsnak.datavalue)
-		.filter((o): o is WikibaseEntityIdSnakValue =>
-			o?.type === "wikibase-entityid"
-		)
-		.map((o) => o.value.id)
-		.filter(isItemId);
-}
-
-export function getItemParents(item: Item): ItemId[] {
-	const parentTaxons = getWikibaseEntityIdClaimValues(
-		item.claims![PARENT_TAXON],
-	);
-	if (parentTaxons.length > 0) {
-		return parentTaxons;
-	}
-
-	return getWikibaseEntityIdClaimValues(item.claims![SUBCLASS_OF]);
-}
-
-function getTaxonName(item: Item): string | undefined {
-	return item.claims?.[TAXON_NAME]
-		?.map((o) => o.mainsnak.datavalue)
-		.find((o): o is StringSnakValue => o?.type === "string")
-		?.value;
-}
-
-export function bestEffortLabel(item: Item): string | undefined {
-	const taxon = getTaxonName(item);
-	const human = item.labels?.de?.value ?? item.labels?.en?.value;
-
-	if (human && taxon) {
-		return human === taxon ? taxon : `${taxon} (${human})`;
-	}
-
-	if (taxon) {
-		return taxon;
-	}
-
-	if (human) {
-		return human;
-	}
-
-	return undefined;
 }
