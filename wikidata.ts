@@ -1,6 +1,8 @@
 import {
 	type Entity,
 	type EntityId,
+	simplifySparqlResults,
+	type SparqlResults,
 	WBK,
 } from "https://esm.sh/wikibase-sdk@9.2.2";
 
@@ -29,4 +31,13 @@ export async function getEntities(
 		}),
 	);
 	return jsons.flatMap((entities) => Object.values(entities));
+}
+
+export async function sparqlQuerySimplifiedMinified(
+	query: string,
+): Promise<string[]> {
+	const url = wdk.sparqlQuery(query);
+	const response = await fetch(url);
+	const results = await response.json() as SparqlResults;
+	return simplifySparqlResults(results, { minimize: true }) as string[];
 }

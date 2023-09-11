@@ -1,8 +1,17 @@
 import { isItemId } from "https://esm.sh/wikibase-sdk@9.2.2";
 import { GameState } from "./game-state.ts";
+import { getSuperfamilies } from "./queries.ts";
+import { randomItem } from "./helpers.ts";
 import { search as wikidataSearch } from "./wikidata-search.ts";
 
-const gamestate = new GameState("Q83483"); // sea urchin
+const searchInput = document.querySelector("#search") as HTMLInputElement;
+const searchResults = document.querySelector("#searchresults") as HTMLElement;
+const loadingView = document.querySelector("#loading") as HTMLElement;
+
+const potentialTargets = await getSuperfamilies();
+const gamestate = new GameState(randomItem(potentialTargets));
+loadingView.hidden = true;
+await gamestate.graph();
 
 async function updateGraph() {
 	loadingView.hidden = false;
@@ -15,18 +24,11 @@ type DrawDiagramFunction = (graphDefinition: string) => Promise<void> | void;
 let drawDiagram: DrawDiagramFunction = () => {
 	console.log("not yet initialized");
 };
-export async function init(
-	drawDiagramFunc: DrawDiagramFunction,
-): Promise<void> {
+export function init(drawDiagramFunc: DrawDiagramFunction): void {
 	drawDiagram = drawDiagramFunc;
-	await updateGraph();
 }
 
-const searchInput = document.querySelector("#search") as HTMLInputElement;
 searchInput.addEventListener("change", onSearch);
-const searchResults = document.querySelector("#searchresults") as HTMLElement;
-const loadingView = document.querySelector("#loading") as HTMLElement;
-
 async function onSearch() {
 	const { value } = searchInput;
 	searchResults.innerHTML = "";
@@ -57,6 +59,3 @@ async function onSearch() {
 		});
 	}
 }
-
-searchInput.value = "Taraxacum";
-await onSearch();
