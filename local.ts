@@ -46,13 +46,3 @@ const graph = gamestate.graph();
 console.log("hints", gamestate.hints());
 
 Deno.writeTextFileSync("graph.d2", graph.buildD2());
-Deno.writeTextFileSync("graph.mermaid", graph.buildMermaid());
-const command = new Deno.Command("d2", {
-	args: [
-		"--dark-theme=201",
-		"graph.d2",
-	],
-}).outputSync();
-if (!command.success) {
-	throw new Error("d2 failed");
-}
