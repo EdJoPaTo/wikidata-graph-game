@@ -5,3 +5,5 @@ graph.mermaid
 graph*.png
 graph*.svg
 store.json
+
+public/logic.js

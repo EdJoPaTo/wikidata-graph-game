@@ -5,6 +5,7 @@
 	// https://deno.land/manual/advanced/typescript/configuration
 	// https://www.typescriptlang.org/tsconfig/
 	"compilerOptions": {
+		"lib": ["dom", "dom.iterable", "dom.asynciterable", "deno.ns"],
 		"noFallthroughCasesInSwitch": true,
 		"noImplicitOverride": true,
 		"noImplicitReturns": true,
@@ -15,9 +16,15 @@
 		"useUnknownInCatchVariables": true
 	},
 	"fmt": {
+		"exclude": [
+			"public/logic.js"
+		],
 		"useTabs": true
 	},
 	"lint": {
+		"exclude": [
+			"public/logic.js"
+		],
 		"rules": {
 			// https://lint.deno.land/?all=on
 			"include": [
