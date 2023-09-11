@@ -1,6 +1,7 @@
 .vscode
 
 graph.d2
+graph.mermaid
 graph*.png
 graph*.svg
 store.json

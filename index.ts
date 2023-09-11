@@ -85,10 +85,10 @@ for (const id of interesting) {
 }
 
 for (const id of GUESSES) {
-	graph.setShape(id, "oval");
+	graph.setShape(id, "guess");
 }
 
-graph.setShape(TARGET, "hexagon");
+graph.setShape(TARGET, "target");
 graph.setLabel(
 	TARGET,
 	GUESSES.includes(TARGET)
@@ -96,7 +96,8 @@ graph.setLabel(
 		: "guess me",
 );
 
-Deno.writeTextFileSync("graph.d2", graph.build());
+Deno.writeTextFileSync("graph.d2", graph.buildD2());
+Deno.writeTextFileSync("graph.mermaid", graph.buildMermaid());
 const command = new Deno.Command("d2", {
 	args: [
 		"--dark-theme=201",
