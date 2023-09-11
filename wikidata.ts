@@ -10,6 +10,10 @@ import {
 	type WikibaseEntityIdSnakValue,
 } from "https://esm.sh/wikibase-sdk@9.2.2";
 
+const SUBCLASS_OF = "P279";
+const PARENT_TAXON = "P171";
+const TAXON_NAME = "P225";
+
 const USER_AGENT = "github.com/EdJoPaTo/wikidata-graph-game";
 const headers = new Headers();
 headers.set("user-agent", USER_AGENT);
@@ -37,10 +41,6 @@ export async function getEntities(
 	return jsons.flatMap((entities) => Object.values(entities));
 }
 
-const INSTANCE_OF = "P31";
-const SUBCLASS_OF = "P279";
-const PARENT_TAXON = "P171";
-
 function getWikibaseEntityIdClaimValues(
 	o: PropertyClaims | undefined,
 ): ItemId[] {
@@ -53,12 +53,6 @@ function getWikibaseEntityIdClaimValues(
 		.filter(isItemId);
 }
 
-export function getItemParentTaxons(item: Item): ItemId[] {
-	return getWikibaseEntityIdClaimValues(
-		item.claims![PARENT_TAXON],
-	);
-}
-
 export function getItemParents(item: Item): ItemId[] {
 	const parentTaxons = getWikibaseEntityIdClaimValues(
 		item.claims![PARENT_TAXON],
@@ -67,18 +61,18 @@ export function getItemParents(item: Item): ItemId[] {
 		return parentTaxons;
 	}
 
-	return [
-		...getWikibaseEntityIdClaimValues(item.claims![INSTANCE_OF]),
-		...getWikibaseEntityIdClaimValues(item.claims![SUBCLASS_OF]),
-	];
+	return getWikibaseEntityIdClaimValues(item.claims![SUBCLASS_OF]);
 }
 
-export function bestEffortLabel(item: Item): string | undefined {
-	const taxon = item.claims?.["P225"]
+function getTaxonName(item: Item): string | undefined {
+	return item.claims?.[TAXON_NAME]
 		?.map((o) => o.mainsnak.datavalue)
 		.find((o): o is StringSnakValue => o?.type === "string")
 		?.value;
+}
 
+export function bestEffortLabel(item: Item): string | undefined {
+	const taxon = getTaxonName(item);
 	const human = item.labels?.de?.value ?? item.labels?.en?.value;
 
 	if (human && taxon) {
