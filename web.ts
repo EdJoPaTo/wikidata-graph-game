@@ -29,7 +29,8 @@ async function updateGraph() {
 	await gamestate.cache();
 	const graph = gamestate.graph();
 	await drawDiagram(graph.buildMermaid());
-	hintButton.hidden = gamestate.hints().length === 0;
+	hintButton.hidden = gamestate.isWon() || gamestate.hints().length === 0;
+	searchInput.hidden = gamestate.isWon();
 	loadingView.hidden = true;
 }
 

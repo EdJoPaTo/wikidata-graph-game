@@ -16,6 +16,10 @@ export class GameState {
 		this.guesses.add(guess);
 	}
 
+	isWon(): boolean {
+		return this.guesses.has(this.target);
+	}
+
 	async cache(): Promise<void> {
 		await cacheWithParents([this.target, ...this.guesses]);
 	}
