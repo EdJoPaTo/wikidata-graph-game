@@ -74,11 +74,13 @@ for (const id of interesting) {
 	const item = store.getCached(id);
 	graph.setLabel(id, bestEffortLabel(item));
 
-	const parents = new Parents(id).getMinimumDistance(
+	const idParents = new Parents(id);
+	const parents = idParents.getMinimumDistance(
 		[...interesting].filter((o) => o !== id),
 	);
 	for (const parent of parents) {
-		graph.addLink(parent, id);
+		const distance = idParents.getDistance(parent);
+		graph.addLink(parent, id, `${distance}`);
 	}
 }
 
