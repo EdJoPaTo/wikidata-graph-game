@@ -32,10 +32,10 @@ export function simplify(item: Item): SimplifiedItem {
 
 	return {
 		id,
-		labels,
 		taxonName: stringSnaks(claimValues(item, TAXON_NAME)),
 		parentTaxon: itemSnaks(claimValues(item, PARENT_TAXON)),
 		subclassOf: itemSnaks(claimValues(item, SUBCLASS_OF)),
+		labels,
 	};
 }
 
