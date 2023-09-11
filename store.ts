@@ -1,5 +1,5 @@
 import { arrayFilterUnique } from "https://esm.sh/array-filter-unique@^3";
-import { type Item, type ItemId } from "https://esm.sh/wikibase-sdk@9.2.2";
+import type { Item, ItemId } from "https://esm.sh/wikibase-sdk@9.2.2";
 import { getEntities } from "./wikidata.ts";
 import { type SimplifiedItem, simplify } from "./simplify-item.ts";
 
