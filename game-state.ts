@@ -15,10 +15,13 @@ export class GameState {
 		this.guesses.add(guess);
 	}
 
-	async graph(): Promise<Graph> {
+	async cache(): Promise<void> {
+		await cacheWithParents([this.target, ...this.guesses]);
+	}
+
+	graph(): Graph {
 		const graph = new Graph();
 		const interesting = new Set<ItemId>([this.target, ...this.guesses]);
-		await cacheWithParents([...interesting]);
 
 		for (const aId of interesting) {
 			const aParents = new Parents(aId);

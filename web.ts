@@ -20,11 +20,12 @@ export function init(drawDiagramFunc: DrawDiagramFunction): void {
 const potentialTargets = await getSuperfamilies();
 const gamestate = new GameState(randomItem(potentialTargets));
 loadingView.hidden = true;
-await gamestate.graph();
+gamestate.cache();
 
 async function updateGraph() {
 	loadingView.hidden = false;
-	const graph = await gamestate.graph();
+	await gamestate.cache();
+	const graph = gamestate.graph();
 	await drawDiagram(graph.buildMermaid());
 	loadingView.hidden = true;
 }
