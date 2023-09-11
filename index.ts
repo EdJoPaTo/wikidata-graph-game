@@ -1,6 +1,5 @@
 import type { ItemId } from "https://esm.sh/wikibase-sdk@9.2.2";
 import { GameState } from "./game-state.ts";
-import * as store from "./store.ts";
 
 const TARGET = "Q83483"; // sea urchin
 const GUESSES: readonly ItemId[] = [
@@ -37,16 +36,12 @@ const GUESSES: readonly ItemId[] = [
 	// "Q9490", // Gleithörnchen
 ];
 
-store.load();
-
 const gamestate = new GameState(TARGET);
 for (const guess of GUESSES) {
 	gamestate.addGuess(guess);
 }
 
 const graph = await gamestate.graph();
-
-store.save();
 
 Deno.writeTextFileSync("graph.d2", graph.buildD2());
 Deno.writeTextFileSync("graph.mermaid", graph.buildMermaid());
