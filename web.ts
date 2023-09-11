@@ -8,6 +8,7 @@ import { getCached } from "./store.ts";
 const searchInput = document.querySelector("#search") as HTMLInputElement;
 const searchResults = document.querySelector("#searchresults") as HTMLElement;
 const loadingView = document.querySelector("#loading") as HTMLElement;
+const hintButton = document.querySelector("#hint") as HTMLInputElement;
 
 type DrawDiagramFunction = (graphDefinition: string) => Promise<void> | void;
 let drawDiagram: DrawDiagramFunction = () => {
@@ -24,11 +25,22 @@ gamestate.cache();
 
 async function updateGraph() {
 	loadingView.hidden = false;
+	hintButton.hidden = true;
 	await gamestate.cache();
 	const graph = gamestate.graph();
 	await drawDiagram(graph.buildMermaid());
+	hintButton.hidden = gamestate.hints().length === 0;
 	loadingView.hidden = true;
 }
+
+hintButton.addEventListener("click", async () => {
+	hintButton.hidden = true;
+	const hints = gamestate.hints();
+	if (hints.length === 0) return;
+	const hint = randomItem(hints);
+	gamestate.addGuess(hint);
+	await updateGraph();
+});
 
 searchInput.addEventListener("change", onSearch);
 async function onSearch() {

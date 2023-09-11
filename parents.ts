@@ -29,7 +29,11 @@ export class Parents {
 		}
 	}
 
-	getDistance(id: ItemId): number | undefined {
+	getOnDistance(distance: number): ItemId[] {
+		return this.#distances.get(distance) ?? [];
+	}
+
+	getDistanceTo(id: ItemId): number | undefined {
 		return this.#items.get(id);
 	}
 

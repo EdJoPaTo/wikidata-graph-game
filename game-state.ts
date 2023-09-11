@@ -19,13 +19,12 @@ export class GameState {
 		await cacheWithParents([this.target, ...this.guesses]);
 	}
 
-	graph(): Graph {
-		const graph = new Graph();
-		const interesting = new Set<ItemId>([this.target, ...this.guesses]);
-
-		for (const aId of interesting) {
+	interestingNodes(): ItemId[] {
+		const known = [this.target, ...this.guesses];
+		const interesting = new Set<ItemId>();
+		for (const aId of known) {
 			const aParents = new Parents(aId);
-			for (const bId of interesting) {
+			for (const bId of known) {
 				if (aId === bId) continue;
 				const bParents = new Parents(bId);
 				const commonParents = aParents.getCommonMinimumDistance(bParents);
@@ -34,18 +33,38 @@ export class GameState {
 				}
 			}
 		}
+		return [...interesting];
+	}
 
-		for (const id of interesting) {
+	hints(): ItemId[] {
+		const targetParents = new Parents(this.target);
+		const interesting = this.interestingNodes();
+		const closestKnown = targetParents.getMinimumDistance(interesting);
+		if (closestKnown.length === 0) return [];
+		const distance = targetParents.getDistanceTo(closestKnown[0]!);
+		if (distance === undefined) return [];
+		const closer = targetParents.getOnDistance(distance - 1);
+		return closer;
+	}
+
+	graph(): Graph {
+		const graph = new Graph();
+		const nodes = new Set<ItemId>([
+			this.target,
+			...this.guesses,
+			...this.interestingNodes(),
+		]);
+		for (const id of nodes) {
 			const item = store.getCached(id);
 			graph.setLabel(id, bestEffortLabel(item));
 
 			const idParents = new Parents(id);
 
 			const parents = idParents.getMinimumDistance(
-				[...interesting].filter((o) => o !== id),
+				[...nodes].filter((o) => o !== id),
 			);
 			for (const parent of parents) {
-				const distance = idParents.getDistance(parent);
+				const distance = idParents.getDistanceTo(parent);
 				graph.addLink(parent, id, `${distance}`);
 			}
 		}

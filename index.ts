@@ -43,6 +43,7 @@ for (const guess of GUESSES) {
 
 await gamestate.cache();
 const graph = gamestate.graph();
+console.log("hints", gamestate.hints());
 
 Deno.writeTextFileSync("graph.d2", graph.buildD2());
 Deno.writeTextFileSync("graph.mermaid", graph.buildMermaid());
