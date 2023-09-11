@@ -9,17 +9,14 @@ import {
 	type WikibaseEntityIdSnakValue,
 } from "https://esm.sh/wikibase-sdk@9.2.2";
 
-const SUBCLASS_OF = "P279";
-const PARENT_TAXON = "P171";
-const TAXON_NAME = "P225";
-
 export interface SimplifiedItem {
 	readonly id: ItemId;
 	readonly labels: Readonly<Record<string, string>>;
 
-	readonly taxonName: readonly string[];
+	readonly images: readonly string[];
 	readonly parentTaxon: readonly ItemId[];
 	readonly subclassOf: readonly ItemId[];
+	readonly taxonName: readonly string[];
 }
 
 export function simplify(item: Item): SimplifiedItem {
@@ -32,9 +29,10 @@ export function simplify(item: Item): SimplifiedItem {
 
 	return {
 		id,
-		taxonName: stringSnaks(claimValues(item, TAXON_NAME)),
-		parentTaxon: itemSnaks(claimValues(item, PARENT_TAXON)),
-		subclassOf: itemSnaks(claimValues(item, SUBCLASS_OF)),
+		images: stringSnaks(claimValues(item, "P18")),
+		parentTaxon: itemSnaks(claimValues(item, "P171")),
+		subclassOf: itemSnaks(claimValues(item, "P279")),
+		taxonName: stringSnaks(claimValues(item, "P225")),
 		labels,
 	};
 }
