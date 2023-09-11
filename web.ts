@@ -48,26 +48,25 @@ async function onSearch() {
 	searchResults.innerHTML = "";
 	loadingView.hidden = false;
 	const results = await wikidataSearch(value, "de");
-	loadingView.hidden = true;
 
-	searchResults.innerHTML = results.map((
-		{ id, taxonName, label, description },
-	) => {
-		const title = taxonName ? `${taxonName} (${label})` : label;
-		const item = getCached(id);
-		const styles: string[] = [];
+	searchResults.innerHTML = results
+		.filter((o) => !gamestate.guesses.has(o.id))
+		.map(({ id, taxonName, label, description }) => {
+			const title = taxonName ? `${taxonName} (${label})` : label;
+			const item = getCached(id);
+			const styles: string[] = [];
 
-		const image = item.images[0];
-		if (image) {
-			styles.push("background-image: url(" + getImageUrl(image) + ")");
-		}
+			const image = item.images[0];
+			if (image) {
+				styles.push("background-image: url(" + getImageUrl(image) + ")");
+			}
 
-		return `<div class="searchresult ${id}" style="${styles.join(";")}">
+			return `<div class="searchresult ${id}" style="${styles.join(";")}">
 <strong>${title}</strong>
 <code>${id}</code>
 <div>${description}</div>
 </div>`;
-	}).join("");
+		}).join("");
 
 	for (const element of document.querySelectorAll(".searchresult")) {
 		const itemId = [...element.classList].find(isItemId);
@@ -79,4 +78,6 @@ async function onSearch() {
 			await updateGraph();
 		});
 	}
+
+	loadingView.hidden = true;
 }
