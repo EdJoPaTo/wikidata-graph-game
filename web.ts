@@ -16,6 +16,8 @@ const restartButton = document.querySelector("#restart") as HTMLInputElement;
 const searchInput = document.querySelector("#search") as HTMLInputElement;
 const searchResults = document.querySelector("#searchresults") as HTMLElement;
 
+restartButton.addEventListener("click", () => window.location.reload())
+
 languageSelect.innerHTML = wikimediaLanguageCodes.map((o) =>
 	`<option value="${o}">${o}</option>`
 ).join("");
