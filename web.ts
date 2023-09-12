@@ -12,6 +12,7 @@ import { getCached } from "./store.ts";
 const hintButton = document.querySelector("#hint") as HTMLInputElement;
 const languageSelect = document.querySelector("#language") as HTMLSelectElement;
 const loadingView = document.querySelector("#loading") as HTMLElement;
+const restartButton = document.querySelector("#restart") as HTMLInputElement;
 const searchInput = document.querySelector("#search") as HTMLInputElement;
 const searchResults = document.querySelector("#searchresults") as HTMLElement;
 
@@ -64,7 +65,9 @@ async function updateGraph() {
 	const graph = gamestate.graph(languageSelect.value);
 	await drawDiagram(graph.buildMermaid());
 	hintButton.hidden = gamestate.isWon() || gamestate.hints().length === 0;
+	restartButton.hidden = !gamestate.isWon();
 	searchInput.hidden = gamestate.isWon();
+	if (gamestate.isWon()) searchInput.value = "";
 	loadingView.hidden = true;
 }
 
