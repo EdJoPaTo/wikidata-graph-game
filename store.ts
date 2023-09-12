@@ -8,9 +8,8 @@ export async function cache(ids: readonly ItemId[]): Promise<ItemId[]> {
 	const missing = ids
 		.filter(arrayFilterUnique())
 		.filter((o) => !localStorage.getItem(o));
-	if (missing.length > 0) {
-		console.log("cache", missing.length, missing);
-	}
+	if (missing.length === 0) return [];
+	console.log("cache", missing.length, missing);
 
 	const entities = await getEntities(missing);
 	const items = Object.values(entities)

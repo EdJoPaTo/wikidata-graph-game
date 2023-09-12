@@ -90,23 +90,43 @@ export class GameState {
 	}
 }
 
-function findUncachedParents(id: ItemId): ItemId[] {
-	const item = store.tryGet(id);
-	if (!item) return [id];
-	const parents = getItemParents(item);
-	return parents.flatMap((parent) => findUncachedParents(parent));
+function findUncachedParents(
+	state: Map<ItemId, "missing" | "existing">,
+	ids: readonly ItemId[],
+): void {
+	const remaining = new Set<ItemId>();
+	for (const id of ids) {
+		if (state.has(id)) continue;
+		const item = store.tryGet(id);
+		if (item) {
+			state.set(id, "existing");
+			for (const parent of getItemParents(item)) {
+				remaining.add(parent);
+			}
+		} else {
+			state.set(id, "missing");
+		}
+	}
+	if (remaining.size > 0) {
+		findUncachedParents(state, [...remaining]);
+	}
 }
 
 async function cacheWithParents(ids: readonly ItemId[]): Promise<void> {
-	let missing: ItemId[] = [];
-	while ((missing = ids.flatMap((id) => findUncachedParents(id))).length > 0) {
-		// deno-lint-ignore no-await-in-loop
+	const map = new Map<ItemId, "missing" | "existing">();
+	findUncachedParents(map, ids);
+
+	const missing = [...map]
+		.filter(([_id, state]) => state === "missing")
+		.map(([id]) => id);
+
+	if (missing.length > 0) {
 		const parents = await Promise.all(
 			missing.map((id) => getIndirectParents(id)),
 		);
 		missing.push(...parents.flat());
 
-		// deno-lint-ignore no-await-in-loop
-		await store.cache(missing);
+		const updated = await store.cache(missing);
+		await cacheWithParents(updated);
 	}
 }
