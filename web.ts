@@ -1,14 +1,48 @@
-import { getImageUrl, isItemId } from "https://esm.sh/wikibase-sdk@9.2.2";
+import {
+	getImageUrl,
+	isItemId,
+	wikimediaLanguageCodes,
+} from "https://esm.sh/wikibase-sdk@9.2.2";
 import { GameState } from "./game-state.ts";
 import { getSuperfamilies } from "./queries.ts";
 import { randomItem } from "./helpers.ts";
 import { search as wikidataSearch } from "./wikidata-search.ts";
 import { getCached } from "./store.ts";
 
+const hintButton = document.querySelector("#hint") as HTMLInputElement;
+const languageSelect = document.querySelector("#language") as HTMLSelectElement;
+const loadingView = document.querySelector("#loading") as HTMLElement;
 const searchInput = document.querySelector("#search") as HTMLInputElement;
 const searchResults = document.querySelector("#searchresults") as HTMLElement;
-const loadingView = document.querySelector("#loading") as HTMLElement;
-const hintButton = document.querySelector("#hint") as HTMLInputElement;
+
+languageSelect.innerHTML = wikimediaLanguageCodes.map((o) =>
+	`<option value="${o}">${o}</option>`
+).join("");
+function validLanguage(input: string | undefined | null): string | undefined {
+	if (!input) return undefined;
+	if ((wikimediaLanguageCodes as readonly string[]).includes(input)) {
+		return input;
+	}
+	const short = input.split("-")[0];
+	if (short && (wikimediaLanguageCodes as readonly string[]).includes(short)) {
+		return short;
+	}
+	return undefined;
+}
+languageSelect.value =
+	validLanguage(new URL(window.location.href).searchParams.get("lang")) ??
+		validLanguage(navigator.language) ?? "en";
+languageSelect.addEventListener("change", () => {
+	const lang = languageSelect.value;
+	searchInput.lang = lang;
+
+	updateGraph();
+	onSearch();
+
+	const url = new URL(window.location.href);
+	url.searchParams.set("lang", lang);
+	window.history.pushState({ path: url.toString() }, "", url);
+});
 
 type DrawDiagramFunction = (graphDefinition: string) => Promise<void> | void;
 let drawDiagram: DrawDiagramFunction = () => {
@@ -27,7 +61,7 @@ async function updateGraph() {
 	loadingView.hidden = false;
 	hintButton.hidden = true;
 	await gamestate.cache();
-	const graph = gamestate.graph();
+	const graph = gamestate.graph(languageSelect.value);
 	await drawDiagram(graph.buildMermaid());
 	hintButton.hidden = gamestate.isWon() || gamestate.hints().length === 0;
 	searchInput.hidden = gamestate.isWon();
@@ -47,8 +81,10 @@ searchInput.addEventListener("change", onSearch);
 async function onSearch() {
 	const { value } = searchInput;
 	searchResults.innerHTML = "";
+	if (!value) return;
+
 	loadingView.hidden = false;
-	const results = await wikidataSearch(value, "de");
+	const results = await wikidataSearch(value, languageSelect.value);
 
 	searchResults.innerHTML = results
 		.filter((o) => !gamestate.guesses.has(o.id))

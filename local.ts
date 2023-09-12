@@ -42,7 +42,7 @@ for (const guess of GUESSES) {
 }
 
 await gamestate.cache();
-const graph = gamestate.graph();
+const graph = gamestate.graph("de");
 console.log("hints", gamestate.hints());
 
 Deno.writeTextFileSync("graph.d2", graph.buildD2());

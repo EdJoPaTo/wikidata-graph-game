@@ -65,9 +65,12 @@ export function getItemParents(item: SimplifiedItem): readonly ItemId[] {
 	return item.parentTaxon.length > 0 ? item.parentTaxon : item.subclassOf;
 }
 
-export function bestEffortLabel(item: SimplifiedItem): string | undefined {
+export function bestEffortLabel(
+	item: SimplifiedItem,
+	language: string,
+): string | undefined {
 	const taxon = item.taxonName[0];
-	const human = item.labels["de"] ?? item.labels["en"];
+	const human = item.labels[language];
 
 	if (human && taxon) {
 		return human === taxon ? taxon : `${taxon} (${human})`;

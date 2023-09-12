@@ -74,7 +74,7 @@ export class Parents {
 				depth,
 				values.map((o) => {
 					const item = getCached(o);
-					return `${item.id} ${bestEffortLabel(item)}`;
+					return `${item.id} ${bestEffortLabel(item, "de")}`;
 				}),
 			);
 		}

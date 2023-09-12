@@ -52,7 +52,7 @@ export class GameState {
 		return closer;
 	}
 
-	graph(): Graph {
+	graph(language: string): Graph {
 		const graph = new Graph();
 		const nodes = new Set<ItemId>([
 			this.target,
@@ -61,7 +61,7 @@ export class GameState {
 		]);
 		for (const id of nodes) {
 			const item = store.getCached(id);
-			graph.setLabel(id, bestEffortLabel(item));
+			graph.setLabel(id, bestEffortLabel(item, language));
 
 			const idParents = new Parents(id);
 
@@ -82,7 +82,7 @@ export class GameState {
 		graph.setLabel(
 			this.target,
 			this.guesses.has(this.target)
-				? bestEffortLabel(store.getCached(this.target))
+				? bestEffortLabel(store.getCached(this.target), language)
 				: "guess me",
 		);
 
