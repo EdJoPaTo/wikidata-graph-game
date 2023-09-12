@@ -66,6 +66,7 @@ async function updateGraph() {
 	await drawDiagram(graph.buildMermaid());
 	hintButton.hidden = gamestate.isWon() || gamestate.hints().length === 0;
 	restartButton.hidden = !gamestate.isWon();
+	searchInput.focus();
 	searchInput.hidden = gamestate.isWon();
 	if (gamestate.isWon()) searchInput.value = "";
 	loadingView.hidden = true;

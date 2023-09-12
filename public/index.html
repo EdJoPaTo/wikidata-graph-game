@@ -15,10 +15,12 @@
 	</header>
 	<main>
 		<div id="graphDiv"></div>
-		<select id="language"></select>
-		<input id="search" type="search" placeholder="Search Wikidata…" autocapitalize="false" autofocus />
-		<input id="hint" type="button" value="Get Hint" hidden="true" />
-		<input id="restart" type="button" value="Restart" hidden="true" onclick="window.location.reload()" />
+		<div class="inputs">
+			<input id="search" type="search" placeholder="Search Wikidata…" autocapitalize="false" autofocus />
+			<select id="language"></select>
+			<input id="hint" type="button" value="Get Hint" hidden="true" />
+			<input id="restart" type="button" value="Restart" hidden="true" onclick="window.location.reload()" />
+		</div>
 		<div id="loading">Loading, please wait…</div>
 		<div id="searchresults"></div>
 	</main>
