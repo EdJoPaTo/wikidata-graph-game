@@ -22,7 +22,10 @@ interface GetEntitiesResponse {
 export async function getEntities(
 	ids: EntityId[],
 ): Promise<Entity[]> {
-	const urls = wdk.getManyEntities({ ids, props: ["claims", "labels"] });
+	const urls = wdk.getManyEntities({
+		ids,
+		props: ["labels", "descriptions", "claims"],
+	});
 	const jsons = await Promise.all(
 		urls.map(async (url) => {
 			const response = await fetch(url, { headers });

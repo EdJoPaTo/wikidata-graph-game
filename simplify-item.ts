@@ -5,6 +5,7 @@ import {
 	type PropertyId,
 	type SnakValue,
 	type StringSnakValue,
+	type Term,
 	truthyPropertyClaims,
 	type WikibaseEntityIdSnakValue,
 } from "https://esm.sh/wikibase-sdk@9.2.2";
@@ -12,6 +13,7 @@ import {
 export interface SimplifiedItem {
 	readonly timestamp: number;
 	readonly labels: Readonly<Record<string, string>>;
+	readonly descriptions: Readonly<Record<string, string>>;
 
 	readonly images: readonly string[];
 	readonly parentTaxon: readonly ItemId[];
@@ -19,19 +21,24 @@ export interface SimplifiedItem {
 	readonly taxonName: readonly string[];
 }
 
-export function simplify(item: Item): SimplifiedItem {
-	const labels: Record<string, string> = {};
-	for (const [lang, term] of Object.entries(item.labels ?? {})) {
-		labels[lang] = term.value;
+function flatTerms(terms: Record<string, Term>): Record<string, string> {
+	const result: Record<string, string> = {};
+	for (const [lang, term] of Object.entries(terms)) {
+		result[lang] = term.value;
 	}
 
+	return result;
+}
+
+export function simplify(item: Item): SimplifiedItem {
 	return {
 		timestamp: Date.now(),
 		images: stringSnaks(claimValues(item, "P18")),
 		parentTaxon: itemSnaks(claimValues(item, "P171")),
 		subclassOf: itemSnaks(claimValues(item, "P279")),
 		taxonName: stringSnaks(claimValues(item, "P225")),
-		labels,
+		labels: flatTerms(item.labels ?? {}),
+		descriptions: flatTerms(item.descriptions ?? {}),
 	};
 }
 
@@ -63,12 +70,20 @@ export function getItemParents(item: SimplifiedItem): readonly ItemId[] {
 	return item.parentTaxon.length > 0 ? item.parentTaxon : item.subclassOf;
 }
 
+/** Use en when en-US is not there */
+function bestEffortTerm(
+	terms: Record<string, string>,
+	language: string,
+): string | undefined {
+	return terms[language] || terms[language.split(/-_/)[0]!];
+}
+
 export function bestEffortLabel(
 	item: SimplifiedItem,
 	language: string,
 ): string | undefined {
 	const taxon = item.taxonName[0];
-	const human = item.labels[language];
+	const human = bestEffortTerm(item.labels, language);
 
 	if (human && taxon) {
 		return human === taxon ? taxon : `${taxon} (${human})`;
@@ -77,4 +92,11 @@ export function bestEffortLabel(
 	if (taxon) return taxon;
 	if (human) return human;
 	return undefined;
+}
+
+export function bestEffortDescription(
+	item: SimplifiedItem,
+	language: string,
+): string | undefined {
+	return bestEffortTerm(item.descriptions, language);
 }
