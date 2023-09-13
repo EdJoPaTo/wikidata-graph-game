@@ -12,22 +12,36 @@
 <body>
 	<header>
 		<h1>Wikidata Graph Game</h1>
+		<div class="about">
+			In this game you are given a certain wikidata item to guess.
+			With each guess a graph is enlarged showing its similar parent groups.
+			The goal is to get closer towards the Wikidata item in question.
+		</div>
 	</header>
 	<main>
-		<div id="ingame">
+		<div id="targetselection">
+			<h2>Select the kind of Wikidata item you want to seek (or learn more about)</h2>
+			<div class="loading">Loading, please wait…</div>
+			<div id="targets"></div>
+		</div>
+		<div id="ingame" hidden="true">
+			<h2>Group</h2>
 			<div id="graphDiv"></div>
-			<div class="inputs">
+			<div class="inputs" hidden="true">
+				<label for="search">Add guess</label>:
 				<input id="search" type="search" placeholder="Search Wikidata…" autocapitalize="false" autofocus />
-				<select id="language"></select>
 				<input id="hint" type="button" value="Get Hint" hidden="true" />
-				<input id="restart" type="button" value="Restart" hidden="true" />
 			</div>
-			<div id="loading">Loading, please wait…</div>
+			<input id="restart" type="button" value="Restart" hidden="true" />
+			<div class="loading">Loading, please wait…</div>
 			<div id="searchresults"></div>
 		</div>
 	</main>
 	<footer>
-		<a href="http://github.com/EdJoPaTo/wikidata-graph-game/">Source Code on GitHub</a>
+		<div><label for="language">Language</label>: <select id="language"></select></div>
+		Created by <a href="https://edjopato.de/">EdJoPaTo</a>
+		<br>
+		<a href="http://github.com/EdJoPaTo/wikidata-graph-game/">Source Code</a>
 	</footer>
 </body>
 

@@ -70,12 +70,16 @@ export function getItemParents(item: SimplifiedItem): readonly ItemId[] {
 	return item.parentTaxon.length > 0 ? item.parentTaxon : item.subclassOf;
 }
 
+export function shortLang(language: string): string {
+	return language.split(/-_/)[0]!;
+}
+
 /** Use en when en-US is not there */
 function bestEffortTerm(
 	terms: Record<string, string>,
 	language: string,
 ): string | undefined {
-	return terms[language] || terms[language.split(/-_/)[0]!];
+	return terms[language] || terms[shortLang(language)];
 }
 
 export function bestEffortLabel(

@@ -13,6 +13,16 @@ export async function getIndirectParents(itemId: ItemId): Promise<ItemId[]> {
 	return results;
 }
 
+export async function getDeepSubclassOf(superclass: ItemId): Promise<ItemId[]> {
+	const query = `SELECT ?item WHERE {
+		?item wdt:P279+ wd:${superclass}.
+		FILTER EXISTS {?item wdt:P18 ?image}.
+	}`;
+
+	const results = await sparqlQuerySimplifiedMinified(query) as ItemId[];
+	return results;
+}
+
 export async function getTaxon(taxon: ItemId): Promise<ItemId[]> {
 	const query = `SELECT ?item WHERE {
 	?item wdt:P105 wd:${taxon}.
@@ -23,12 +33,4 @@ export async function getTaxon(taxon: ItemId): Promise<ItemId[]> {
 
 	const results = await sparqlQuerySimplifiedMinified(query) as ItemId[];
 	return results;
-}
-
-export function getSuperfamilies(): Promise<ItemId[]> {
-	return getTaxon("Q2136103");
-}
-
-export function getFamilies(): Promise<ItemId[]> {
-	return getTaxon("Q35409");
 }

@@ -60,7 +60,7 @@ input[type=search] {
 	width: 100%;
 }
 
-#searchresults {
+#targets, #searchresults {
 	align-content: center;
 	align-items: center;
 	display: flex;
@@ -70,7 +70,7 @@ input[type=search] {
 	margin: 10px 0;
 }
 
-.searchresult {
+.target, .searchresult {
 	align-items: center;
 	background-position: center;
 	background-size: cover;
@@ -83,7 +83,7 @@ input[type=search] {
 	width: 450px;
 }
 
-.searchresult * {
+.target *, .searchresult * {
 	border-radius: 0.2rem;
 	margin: 0.2rem;
 	padding: 0.2rem;
@@ -95,6 +95,6 @@ input[type=search] {
 	-webkit-backdrop-filter: blur(5px);
 }
 
-.searchresult:hover {
+.target:hover, .searchresult:hover {
 	cursor: pointer;
 }
