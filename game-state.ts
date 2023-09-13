@@ -45,7 +45,7 @@ export class GameState {
 		const targetParents = new Parents(this.target);
 		const interesting = this.interestingNodes();
 		const closestKnown = targetParents.getMinimumDistance(interesting);
-		if (closestKnown.length === 0) return [];
+		if (closestKnown.length === 0) return targetParents.getRoot();
 		const distance = targetParents.getDistanceTo(closestKnown[0]!);
 		if (distance === undefined) return [];
 		const closer = targetParents.getOnDistance(distance - 1);

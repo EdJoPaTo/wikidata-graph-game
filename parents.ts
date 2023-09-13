@@ -29,6 +29,11 @@ export class Parents {
 		}
 	}
 
+	getRoot(): ItemId[] {
+		const max = Math.max(...this.#distances.keys());
+		return this.#distances.get(max) ?? [];
+	}
+
 	getOnDistance(distance: number): ItemId[] {
 		return this.#distances.get(distance) ?? [];
 	}
