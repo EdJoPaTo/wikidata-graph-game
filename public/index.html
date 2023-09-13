@@ -14,15 +14,17 @@
 		<h1>Wikidata Graph Game</h1>
 	</header>
 	<main>
-		<div id="graphDiv"></div>
-		<div class="inputs">
-			<input id="search" type="search" placeholder="Search Wikidata…" autocapitalize="false" autofocus />
-			<select id="language"></select>
-			<input id="hint" type="button" value="Get Hint" hidden="true" />
-			<input id="restart" type="button" value="Restart" hidden="true" />
+		<div id="ingame">
+			<div id="graphDiv"></div>
+			<div class="inputs">
+				<input id="search" type="search" placeholder="Search Wikidata…" autocapitalize="false" autofocus />
+				<select id="language"></select>
+				<input id="hint" type="button" value="Get Hint" hidden="true" />
+				<input id="restart" type="button" value="Restart" hidden="true" />
+			</div>
+			<div id="loading">Loading, please wait…</div>
+			<div id="searchresults"></div>
 		</div>
-		<div id="loading">Loading, please wait…</div>
-		<div id="searchresults"></div>
 	</main>
 	<footer>
 		<a href="http://github.com/EdJoPaTo/wikidata-graph-game/">Source Code on GitHub</a>

@@ -72,9 +72,9 @@ export class Parents {
 		for (const [depth, values] of this.#distances) {
 			clone.set(
 				depth,
-				values.map((o) => {
-					const item = getCached(o);
-					return `${item.id} ${bestEffortLabel(item, "de")}`;
+				values.map((id) => {
+					const item = getCached(id);
+					return `${id} ${bestEffortLabel(item, "de")}`;
 				}),
 			);
 		}

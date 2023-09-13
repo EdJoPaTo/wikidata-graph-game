@@ -5,9 +5,13 @@ import { type SimplifiedItem, simplify } from "./simplify-item.ts";
 
 /// Returns the ItemIds that were missing before the call
 export async function cache(ids: readonly ItemId[]): Promise<ItemId[]> {
+	const minTimestamp = Date.now() - (1000 * 60 * 30); // 30 min
 	const missing = ids
 		.filter(arrayFilterUnique())
-		.filter((o) => !localStorage.getItem(o));
+		.filter((o) => {
+			const timestamp = tryGet(o)?.timestamp ?? 0;
+			return timestamp < minTimestamp;
+		});
 	if (missing.length === 0) return [];
 	console.log("cache", missing.length, missing);
 

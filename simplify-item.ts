@@ -10,7 +10,7 @@ import {
 } from "https://esm.sh/wikibase-sdk@9.2.2";
 
 export interface SimplifiedItem {
-	readonly id: ItemId;
+	readonly timestamp: number;
 	readonly labels: Readonly<Record<string, string>>;
 
 	readonly images: readonly string[];
@@ -20,15 +20,13 @@ export interface SimplifiedItem {
 }
 
 export function simplify(item: Item): SimplifiedItem {
-	const id = item.id;
-
 	const labels: Record<string, string> = {};
 	for (const [lang, term] of Object.entries(item.labels ?? {})) {
 		labels[lang] = term.value;
 	}
 
 	return {
-		id,
+		timestamp: Date.now(),
 		images: stringSnaks(claimValues(item, "P18")),
 		parentTaxon: itemSnaks(claimValues(item, "P171")),
 		subclassOf: itemSnaks(claimValues(item, "P279")),
