@@ -20,6 +20,7 @@ body {
 	justify-content: space-between;
 	line-height: 1.5;
 	min-height: 100vh;
+	padding: 0 7px;
 	text-align: center;
 
 	color: black;
@@ -30,6 +31,11 @@ body {
 
 a {
 	color: inherit;
+}
+
+header {
+	margin: 0 auto;
+	max-width: 700px;
 }
 
 footer {
@@ -78,14 +84,14 @@ input[type=search] {
 	border: gray solid 1px;
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
+	justify-content: space-evenly;
 	min-height: 15vh;
+	overflow: hidden;
 	width: 450px;
 }
 
 .target *, .searchresult * {
 	border-radius: 0.2rem;
-	margin: 0.2rem;
 	padding: 0.2rem;
 
 	background-color: rgba(240, 240, 240, 0.5);
