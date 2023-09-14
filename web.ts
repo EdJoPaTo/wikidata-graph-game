@@ -25,9 +25,7 @@ const viewTargetselection = document.querySelector(
 ) as HTMLElement;
 const viewIngame = document.querySelector("#ingame") as HTMLElement;
 const ingameInputs = document.querySelector("#ingame .inputs") as HTMLElement;
-const ingameHeading = document.querySelector(
-	"#ingame h2",
-) as HTMLHeadingElement;
+const ingameHeading = document.querySelector("#ingame h2") as HTMLElement;
 
 restartButton.addEventListener("click", () => window.location.reload());
 document.querySelector("h1")!.addEventListener(
