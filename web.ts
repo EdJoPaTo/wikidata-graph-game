@@ -190,5 +190,5 @@ async function onSearch() {
 		});
 	}
 	showLoading(false);
-	searchResults.scrollIntoView();
+	searchInput.scrollIntoView();
 }
