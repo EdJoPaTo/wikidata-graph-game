@@ -125,6 +125,19 @@ async function updateGraph() {
 	await gamestate.cache();
 	const graph = gamestate.graph(languageSelect.value);
 	await drawDiagram(graph.buildMermaid());
+	for (const element of document.querySelectorAll("g.node")) {
+		const itemId = /Q\d+/.exec(element.id)?.[0];
+		if (typeof itemId !== "string" || !isItemId(itemId)) continue;
+		if (itemId === gamestate.target) continue;
+		element.classList.add("clickable");
+		element.addEventListener("click", () => {
+			window.open(
+				`https://www.wikidata.org/wiki/${itemId}`,
+				"_blank",
+				"noopener noreferrer",
+			);
+		});
+	}
 	hintButton.hidden = gamestate.hints().length === 0;
 	searchInput.scrollIntoView();
 	ingameInputs.hidden = gamestate.isWon();

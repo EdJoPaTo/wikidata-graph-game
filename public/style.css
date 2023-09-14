@@ -101,6 +101,6 @@ input[type=search] {
 	-webkit-backdrop-filter: blur(5px);
 }
 
-.target:hover, .searchresult:hover {
+.target, .searchresult, .clickable {
 	cursor: pointer;
 }
