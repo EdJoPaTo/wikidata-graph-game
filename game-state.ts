@@ -52,7 +52,9 @@ export class GameState {
 	hints(): readonly ItemId[] {
 		if (this.isWon()) return [];
 		const links = this.getAllParentLinks();
-		const interesting = getInterestingNodes(links, this.target, [...this.guesses]);
+		const interesting = getInterestingNodes(links, this.target, [
+			...this.guesses,
+		]);
 		const [distance] = getClosestParents(links, this.target, interesting);
 		return getParentsCloserThanDistance(links, this.target, distance);
 	}
