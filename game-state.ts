@@ -1,8 +1,9 @@
 import type { ItemId } from "https://esm.sh/wikibase-sdk@9.2.2";
 import { bestEffortLabel, getItemParents } from "./simplify-item.ts";
+import { getClosestParents, getParentsCloserThanDistance } from "./dijkstra.ts";
 import { getIndirectParents } from "./queries.ts";
+import { getInterestingNodes } from "./parent-graph.ts";
 import { Graph } from "./graph.ts";
-import { Parents } from "./parents.ts";
 import * as store from "./store.ts";
 
 export class GameState {
@@ -24,53 +25,56 @@ export class GameState {
 		await cacheWithParents([this.target, ...this.guesses]);
 	}
 
-	interestingNodes(): ItemId[] {
-		const known = [this.target, ...this.guesses];
-		const interesting = new Set<ItemId>();
-		for (const aId of known) {
-			const aParents = Parents.fromItemCache(aId);
-			for (const bId of known) {
-				if (aId === bId) continue;
-				const bParents = Parents.fromItemCache(bId);
-				const commonParents = aParents.getCommonMinimumDistance(bParents);
-				for (const parent of commonParents) {
-					interesting.add(parent);
-				}
+	getAllParentLinks(): [ItemId, ItemId][] {
+		function add(id: ItemId) {
+			if (all.has(id)) {
+				return;
+			}
+
+			all.add(id);
+
+			for (const parent of getItemParents(store.getCached(id))) {
+				list.push([parent, id]);
+				add(parent);
 			}
 		}
-		return [...interesting];
+
+		const all = new Set<ItemId>();
+		const list: Array<[ItemId, ItemId]> = [];
+
+		for (const id of [this.target, ...this.guesses]) {
+			add(id);
+		}
+
+		return list;
 	}
 
 	hints(): readonly ItemId[] {
 		if (this.isWon()) return [];
-		const targetParents = Parents.fromItemCache(this.target);
-		const interesting = this.interestingNodes();
-		const closestKnown = targetParents.getMinimumDistance(interesting);
-		if (closestKnown.length === 0) return targetParents.getRoot();
-		const distance = targetParents.getDistanceTo(closestKnown[0]!);
-		if (distance === undefined) return [];
-		const closer = targetParents.getOnDistance(distance - 1);
-		return closer;
+		const links = this.getAllParentLinks();
+		const interesting = getInterestingNodes(links, this.target, [...this.guesses]);
+		const [distance] = getClosestParents(links, this.target, interesting);
+		return getParentsCloserThanDistance(links, this.target, distance);
 	}
 
 	graph(language: string): Graph {
+		const links = this.getAllParentLinks();
 		const graph = new Graph();
 		const nodes = new Set<ItemId>([
 			this.target,
 			...this.guesses,
-			...this.interestingNodes(),
+			...getInterestingNodes(links, this.target, [...this.guesses]),
 		]);
 		for (const id of nodes) {
 			const item = store.getCached(id);
 			graph.setLabel(id, bestEffortLabel(item, language));
 
-			const idParents = Parents.fromItemCache(id);
-
-			const parents = idParents.getMinimumDistance(
+			const [distance, parents] = getClosestParents(
+				links,
+				id,
 				[...nodes].filter((o) => o !== id),
 			);
 			for (const parent of parents) {
-				const distance = idParents.getDistanceTo(parent);
 				graph.addLink(parent, id, `${distance}`);
 			}
 		}

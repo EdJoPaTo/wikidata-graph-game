@@ -4,5 +4,5 @@
 *.mermaid
 *.png
 *.svg
-
+parent-graph.json
 public/logic.js
