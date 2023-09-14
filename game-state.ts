@@ -42,6 +42,7 @@ export class GameState {
 	}
 
 	hints(): ItemId[] {
+		if (this.isWon()) return [];
 		const targetParents = new Parents(this.target);
 		const interesting = this.interestingNodes();
 		const closestKnown = targetParents.getMinimumDistance(interesting);
