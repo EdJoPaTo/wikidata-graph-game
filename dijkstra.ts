@@ -1,13 +1,13 @@
 type Links<T> = ReadonlyArray<readonly [T, T]>;
 
-function neighbors<T>(links: Links<T>, item: T): T[] {
+function neighbors<T>(links: Links<T>, item: T): Set<T> {
 	const result = new Set<T>();
 	for (const [a, b] of links) {
 		if (a === b) continue;
 		if (a === item) result.add(b);
 		if (b === item) result.add(a);
 	}
-	return [...result];
+	return result;
 }
 
 export function dijkstra<T>(

@@ -49,7 +49,7 @@ export class GameState {
 		return list;
 	}
 
-	hints(): readonly ItemId[] {
+	hints(): ItemId[] {
 		if (this.isWon()) return [];
 		const links = this.getAllParentLinks();
 		const interesting = getInterestingNodes(links, this.target, [
