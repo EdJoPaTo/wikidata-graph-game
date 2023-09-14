@@ -55,7 +55,10 @@ export class GameState {
 		const interesting = getInterestingNodes(links, this.target, [
 			...this.guesses,
 		]);
-		const [distance] = getClosestParents(links, this.target, interesting);
+		const [distance] = getClosestParents(links, this.target, [
+			...interesting,
+			...this.guesses,
+		]);
 		return getParentsCloserThanDistance(links, this.target, distance);
 	}
 
