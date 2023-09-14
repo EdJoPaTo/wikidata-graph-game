@@ -1,11 +1,13 @@
 import { dijkstra } from "./dijkstra.ts";
 
-/** nodes in the graph where something is branching */
+/** Nodes in the graph where something is branching.
+ * Does not include start / targets in the result.
+ */
 export function getInterestingNodes<T>(
 	links: ReadonlyArray<readonly [T, T]>,
 	start: T,
 	relevantTargets: readonly T[],
-): T[] {
+): Set<T> {
 	const solutions = dijkstra(links, start);
 	const relevantPaths = relevantTargets.map((o) => solutions.get(o) ?? []);
 	const relevantNodes = new Set(relevantPaths.flat());
@@ -38,5 +40,9 @@ export function getInterestingNodes<T>(
 		relevantLinks.filter(([_a, b]) => node === b).length !== 1
 	);
 
-	return branches;
+	// Prevent duplicates and ensure
+	const result = new Set(branches);
+	result.delete(start);
+	for (const o of relevantTargets) result.delete(o);
+	return result;
 }

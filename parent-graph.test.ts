@@ -4,7 +4,7 @@ import { Graph } from "./graph.ts";
 import { LINKS } from "./dijkstra.test.ts";
 
 const intnod = (start: number, targets: number[]) =>
-	getInterestingNodes(LINKS, start, targets).sort();
+	[...getInterestingNodes(LINKS, start, targets)].sort();
 
 export function generateD2(highlights: readonly number[]): void {
 	const graph = new Graph();
@@ -21,13 +21,13 @@ export function generateD2(highlights: readonly number[]): void {
 // generateD2(intnod(3, [8, 10, 11]));
 
 Deno.test("3 -> 8", () => {
-	assertEquals(intnod(3, [8]), [2, 3, 8]);
+	assertEquals(intnod(3, [8]), [2]);
 });
 
 Deno.test("3 -> 8, 10", () => {
-	assertEquals(intnod(3, [8, 10]), [10, 2, 3, 6, 8]);
+	assertEquals(intnod(3, [8, 10]), [2, 6]);
 });
 
 Deno.test("3 -> 8, 10, 11", () => {
-	assertEquals(intnod(3, [8, 10, 11]), [10, 11, 2, 3, 6, 8, 9]);
+	assertEquals(intnod(3, [8, 10, 11]), [2, 6, 9]);
 });
