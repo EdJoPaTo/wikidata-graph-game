@@ -15,6 +15,7 @@ const GUESSES: readonly ItemId[] = [
 	// "Q15504328", // Salmoninae
 	// "Q15978631", // human
 	// "Q192272", // Mammut
+	"Q19610691", // domestic cattle
 	// "Q200184", // Otter
 	// "Q204175", // Hamster
 	// "Q2258881", // Trout
@@ -23,10 +24,12 @@ const GUESSES: readonly ItemId[] = [
 	"Q25407", // Bumble bee
 	// "Q25900", // Familiy of Rabbit
 	"Q2699803", // Sea gull
+	// "Q308841", // Schnecke
 	"Q53663", // Salamander
 	// "Q59166", // Quastenflossler
 	// "Q611843", // Octopus
 	// "Q6120", // Hedgehog
+	// "Q7386", // Ameisen
 	// "Q783794", // company
 	// "Q79803", // Cuy (Guinea pig)
 	// "Q830", // cattle
@@ -34,6 +37,7 @@ const GUESSES: readonly ItemId[] = [
 	"Q83483", // Sea urchin
 	// "Q9482", // squirrel
 	// "Q9490", // Gleithörnchen
+	// "Q971343", // Fledermaus
 ];
 
 const gamestate = new GameState(TARGET);
