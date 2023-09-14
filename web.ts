@@ -3,12 +3,12 @@ import {
 	type ItemId,
 	wikimediaLanguageCodes,
 } from "https://esm.sh/wikibase-sdk@9.2.2";
+import { bestEffortDescription, bestEffortLabel } from "./simplify-item.ts";
+import { cache, getCached } from "./store.ts";
 import { GameState } from "./game-state.ts";
+import { getTarget, TARGET_GROUPS, TargetKind } from "./gametargets.ts";
 import { randomItem } from "./helpers.ts";
 import { search as wikidataSearch } from "./wikidata-search.ts";
-import { cache, getCached } from "./store.ts";
-import { bestEffortDescription, bestEffortLabel } from "./simplify-item.ts";
-import { getTarget, TARGET_GROUPS, TargetKind } from "./gametargets.ts";
 import {
 	setImageAsBackground,
 	showLoading,
