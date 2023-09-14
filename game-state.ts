@@ -28,10 +28,10 @@ export class GameState {
 		const known = [this.target, ...this.guesses];
 		const interesting = new Set<ItemId>();
 		for (const aId of known) {
-			const aParents = new Parents(aId);
+			const aParents = Parents.fromItemCache(aId);
 			for (const bId of known) {
 				if (aId === bId) continue;
-				const bParents = new Parents(bId);
+				const bParents = Parents.fromItemCache(bId);
 				const commonParents = aParents.getCommonMinimumDistance(bParents);
 				for (const parent of commonParents) {
 					interesting.add(parent);
@@ -41,9 +41,9 @@ export class GameState {
 		return [...interesting];
 	}
 
-	hints(): ItemId[] {
+	hints(): readonly ItemId[] {
 		if (this.isWon()) return [];
-		const targetParents = new Parents(this.target);
+		const targetParents = Parents.fromItemCache(this.target);
 		const interesting = this.interestingNodes();
 		const closestKnown = targetParents.getMinimumDistance(interesting);
 		if (closestKnown.length === 0) return targetParents.getRoot();
@@ -64,7 +64,7 @@ export class GameState {
 			const item = store.getCached(id);
 			graph.setLabel(id, bestEffortLabel(item, language));
 
-			const idParents = new Parents(id);
+			const idParents = Parents.fromItemCache(id);
 
 			const parents = idParents.getMinimumDistance(
 				[...nodes].filter((o) => o !== id),

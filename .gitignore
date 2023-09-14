@@ -1,9 +1,8 @@
 .vscode
 
-graph.d2
-graph.mermaid
-graph*.png
-graph*.svg
-store.json
+*.d2
+*.mermaid
+*.png
+*.svg
 
 public/logic.js
