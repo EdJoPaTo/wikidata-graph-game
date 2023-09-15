@@ -126,7 +126,7 @@ async function updateGraph() {
 	for (const element of document.querySelectorAll("g.node")) {
 		const itemId = /Q\d+/.exec(element.id)?.[0];
 		if (typeof itemId !== "string" || !isItemId(itemId)) continue;
-		if (itemId === gamestate.target) continue;
+		if (itemId === gamestate.target && !gamestate.isWon()) continue;
 		element.outerHTML =
 			`<a href="https://www.wikidata.org/wiki/${itemId}" class="${itemId}" target="_blank" rel="noopener">` +
 			element.outerHTML + "</a>";
