@@ -80,7 +80,7 @@ async function loadTargets() {
 		const descriptionText = bestEffortDescription(item, languageSelect.value);
 		const description = descriptionText ? `<div>${descriptionText}</div>` : "";
 
-		return `<a href="#" class="target ${kind} ${id}">
+		return `<a href="#" class="${kind} ${id}">
 <strong>${title}</strong>
 <code>${id}</code>
 ${description}
@@ -89,7 +89,7 @@ ${description}
 
 	for (const [kind, id] of TARGET_GROUPS) {
 		const element = document.querySelector(
-			`.target.${kind}.${id}`,
+			`#targets .${kind}.${id}`,
 		) as HTMLElement;
 		setImageAsBackground(element, id);
 		element.addEventListener("click", async () => {
@@ -162,7 +162,7 @@ async function onSearch() {
 	searchResults.innerHTML = relevantResults
 		.map(({ id, taxonName, label, description }) => {
 			const title = taxonName ? `${taxonName} (${label})` : label;
-			return `<a href="#" class="searchresult ${id}">
+			return `<a href="#" class="${id}">
 <strong>${title}</strong>
 <code>${id}</code>
 <div>${description}</div>
@@ -171,7 +171,7 @@ async function onSearch() {
 
 	for (const { id } of relevantResults) {
 		const element = document.querySelector(
-			`.searchresult.${id}`,
+			`#searchresults .${id}`,
 		) as HTMLElement;
 		setImageAsBackground(element, id);
 

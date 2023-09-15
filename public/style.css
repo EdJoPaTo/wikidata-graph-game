@@ -70,7 +70,7 @@ input[type=search] {
 	width: 100%;
 }
 
-#targets, #searchresults {
+.wdItemList {
 	align-content: center;
 	align-items: center;
 	display: flex;
@@ -80,7 +80,7 @@ input[type=search] {
 	margin: 10px 0;
 }
 
-.target, .searchresult {
+.wdItemList > * {
 	align-items: center;
 	background-position: center;
 	background-size: cover;
@@ -94,7 +94,7 @@ input[type=search] {
 	width: 450px;
 }
 
-.target *, .searchresult * {
+.wdItemList > * > * {
 	border-radius: 0.2rem;
 	padding: 0.2rem;
 
