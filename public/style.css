@@ -34,6 +34,7 @@ header, main {
 
 a {
 	color: inherit;
+	text-decoration: inherit;
 }
 
 header .about {
@@ -102,8 +103,4 @@ input[type=search] {
 
 	backdrop-filter: blur(5px);
 	-webkit-backdrop-filter: blur(5px);
-}
-
-.target, .searchresult, .clickable {
-	cursor: pointer;
 }

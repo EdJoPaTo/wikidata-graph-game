@@ -28,7 +28,7 @@ const ingameInputs = document.querySelector("#ingame .inputs") as HTMLElement;
 const ingameHeading = document.querySelector("#ingame h2") as HTMLElement;
 
 restartButton.addEventListener("click", () => window.location.reload());
-document.querySelector("h1")!.addEventListener(
+document.querySelector("header > a")!.addEventListener(
 	"click",
 	() => window.location.reload(),
 );
@@ -80,11 +80,11 @@ async function loadTargets() {
 		const descriptionText = bestEffortDescription(item, languageSelect.value);
 		const description = descriptionText ? `<div>${descriptionText}</div>` : "";
 
-		return `<div class="target ${kind} ${id}">
+		return `<a href="#" class="target ${kind} ${id}">
 <strong>${title}</strong>
 <code>${id}</code>
 ${description}
-</div>`;
+</a>`;
 	}).join("");
 
 	for (const [kind, id] of TARGET_GROUPS) {
@@ -127,14 +127,9 @@ async function updateGraph() {
 		const itemId = /Q\d+/.exec(element.id)?.[0];
 		if (typeof itemId !== "string" || !isItemId(itemId)) continue;
 		if (itemId === gamestate.target) continue;
-		element.classList.add("clickable");
-		element.addEventListener("click", () => {
-			window.open(
-				`https://www.wikidata.org/wiki/${itemId}`,
-				"_blank",
-				"noopener noreferrer",
-			);
-		});
+		element.outerHTML =
+			`<a href="https://www.wikidata.org/wiki/${itemId}" class="${itemId}" target="_blank" rel="noopener">` +
+			element.outerHTML + "</a>";
 	}
 	hintButton.hidden = gamestate.hints().length === 0;
 	searchInput.scrollIntoView();
@@ -167,11 +162,11 @@ async function onSearch() {
 	searchResults.innerHTML = relevantResults
 		.map(({ id, taxonName, label, description }) => {
 			const title = taxonName ? `${taxonName} (${label})` : label;
-			return `<div class="searchresult ${id}">
+			return `<a href="#" class="searchresult ${id}">
 <strong>${title}</strong>
 <code>${id}</code>
 <div>${description}</div>
-</div>`;
+</a>`;
 		}).join("");
 
 	for (const { id } of relevantResults) {
