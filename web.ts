@@ -74,28 +74,26 @@ async function loadTargets() {
 	await cache(TARGET_GROUPS.map(([_kind, id]) => id));
 
 	const targets = document.querySelector("#targets") as HTMLElement;
-	targets.innerHTML = TARGET_GROUPS.map(([kind, id]) => {
+	targets.replaceChildren(...TARGET_GROUPS.map(([kind, id]) => {
 		const item = getCached(id);
 		const title = bestEffortLabel(item, languageSelect.value);
 		const descriptionText = bestEffortDescription(item, languageSelect.value);
-		const description = descriptionText ? `<div>${descriptionText}</div>` : "";
 
-		return `<a href="#" class="${kind} ${id}">
-<strong>${title}</strong>
-<code>${id}</code>
-${description}
-</a>`;
-	}).join("");
-
-	for (const [kind, id] of TARGET_GROUPS) {
-		const element = document.querySelector(
-			`#targets .${kind}.${id}`,
-		) as HTMLElement;
+		const element = document.createElement("a");
+		element.classList.add(kind, id);
+		element.innerHTML = `<strong>${title}</strong>
+<code>${id}</code>`;
+		if (descriptionText) {
+			const d = document.createElement("div");
+			d.innerText = descriptionText;
+			element.appendChild(d);
+		}
 		setImageAsBackground(element, id);
 		element.addEventListener("click", async () => {
 			await beginGame(kind, id);
 		});
-	}
+		return element;
+	}));
 
 	showLoading(false);
 }
@@ -159,29 +157,24 @@ async function onSearch() {
 	const relevantResults = results
 		.filter((o) => !gamestate.guesses.has(o.id));
 
-	searchResults.innerHTML = relevantResults
+	searchResults.replaceChildren(...relevantResults
 		.map(({ id, taxonName, label, description }) => {
 			const title = taxonName ? `${taxonName} (${label})` : label;
-			return `<a href="#" class="${id}">
-<strong>${title}</strong>
+			const element = document.createElement("a");
+			element.href = "#";
+			element.classList.add(id);
+			element.innerHTML = `<strong>${title}</strong>
 <code>${id}</code>
-<div>${description}</div>
-</a>`;
-		}).join("");
-
-	for (const { id } of relevantResults) {
-		const element = document.querySelector(
-			`#searchresults .${id}`,
-		) as HTMLElement;
-		setImageAsBackground(element, id);
-
-		element.addEventListener("click", async () => {
-			gamestate.addGuess(id);
-			searchResults.innerHTML = "";
-			searchInput.value = "";
-			await updateGraph();
-		});
-	}
+<div>${description}</div>`;
+			setImageAsBackground(element, id);
+			element.addEventListener("click", async () => {
+				gamestate.addGuess(id);
+				searchResults.innerHTML = "";
+				searchInput.value = "";
+				await updateGraph();
+			});
+			return element;
+		}));
 	showLoading(false);
 	searchInput.scrollIntoView();
 }
