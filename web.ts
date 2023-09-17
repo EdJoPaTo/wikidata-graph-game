@@ -4,7 +4,6 @@ import {
 	wikimediaLanguageCodes,
 } from "https://esm.sh/wikibase-sdk@9.2.2";
 import { bestEffortDescription, bestEffortLabel } from "./simplify-item.ts";
-import { cache, getCached } from "./store.ts";
 import { GameState } from "./game-state.ts";
 import { getTarget, TARGET_GROUPS, TargetKind } from "./gametargets.ts";
 import { randomItem } from "./helpers.ts";
@@ -14,6 +13,7 @@ import {
 	showLoading,
 	validLanguage,
 } from "./web-helper.ts";
+import * as store from "./store.ts";
 
 const hintButton = document.querySelector("#hint") as HTMLInputElement;
 const languageSelect = document.querySelector("#language") as HTMLSelectElement;
@@ -33,10 +33,14 @@ document.querySelector("header > a")!.addEventListener(
 	() => window.location.reload(),
 );
 
+document.querySelector("#clearcache")!.addEventListener("click", () => {
+	store.clear();
+});
+
 function updateIngameHeading() {
 	const itemId = ingameHeading.className;
 	if (!isItemId(itemId)) return;
-	const item = getCached(itemId);
+	const item = store.getCached(itemId);
 	ingameHeading.innerText = bestEffortLabel(item, languageSelect.value) ??
 		itemId;
 }
@@ -71,11 +75,11 @@ export function init(drawDiagramFunc: DrawDiagramFunction): void {
 
 async function loadTargets() {
 	showLoading(true);
-	await cache(TARGET_GROUPS.map(([_kind, id]) => id));
+	await store.cache(TARGET_GROUPS.map(([_kind, id]) => id));
 
 	const targets = document.querySelector("#targets") as HTMLElement;
 	targets.replaceChildren(...TARGET_GROUPS.map(([kind, id]) => {
-		const item = getCached(id);
+		const item = store.getCached(id);
 		const title = bestEffortLabel(item, languageSelect.value);
 		const descriptionText = bestEffortDescription(item, languageSelect.value);
 

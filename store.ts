@@ -37,3 +37,7 @@ export function getCached(id: ItemId): SimplifiedItem {
 	if (!result) throw new Error("id not cached: " + id);
 	return result;
 }
+
+export function clear(): void {
+	localStorage.clear();
+}
