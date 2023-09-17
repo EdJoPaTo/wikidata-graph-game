@@ -116,6 +116,7 @@ async function beginGame(kind: TargetKind, group: ItemId) {
 await loadTargets();
 
 async function updateGraph() {
+	if (!gamestate) return;
 	showLoading(true);
 	hintButton.hidden = true;
 	await gamestate.cache();
