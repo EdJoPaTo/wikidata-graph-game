@@ -21,6 +21,20 @@ export class GameState {
 		return this.guesses.has(this.target);
 	}
 
+	hasMissingWikidataLabels(language: string): boolean {
+		const links = this.getAllParentLinks();
+		const nodes = new Set<ItemId>([
+			this.target,
+			...this.guesses,
+			...getInterestingNodes(links, this.target, [...this.guesses]),
+		]);
+		if (!this.isWon()) nodes.delete(this.target);
+
+		return [...nodes].some((id) =>
+			bestEffortLabel(store.getCached(id), language) === undefined
+		);
+	}
+
 	async cache(): Promise<void> {
 		await cacheWithParents([this.target, ...this.guesses]);
 	}

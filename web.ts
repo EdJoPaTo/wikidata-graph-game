@@ -22,6 +22,9 @@ const hintButton = document.querySelector("#hint") as HTMLInputElement;
 const ingameHeading = document.querySelector("#ingame h2") as HTMLElement;
 const ingameInputs = document.querySelector("#ingame .inputs") as HTMLElement;
 const languageSelect = document.querySelector("#language") as HTMLSelectElement;
+const missingWikidataLabelInfo = document.querySelector(
+	"#missingwikidatalabel",
+) as HTMLDivElement;
 const restartButton = document.querySelector("#restart") as HTMLInputElement;
 const searchInput = document.querySelector("#search") as HTMLInputElement;
 const searchResults = document.querySelector("#searchresults") as HTMLElement;
@@ -158,6 +161,9 @@ async function updateGraph() {
 			`<a href="https://www.wikidata.org/wiki/${itemId}" class="${itemId}" target="_blank" rel="noopener">` +
 			element.outerHTML + "</a>";
 	}
+	missingWikidataLabelInfo.hidden = !gamestate.hasMissingWikidataLabels(
+		languageSelect.value,
+	);
 	hintButton.hidden = gamestate.hints().length === 0;
 	searchInput.scrollIntoView();
 	ingameInputs.hidden = gamestate.isWon();
