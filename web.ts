@@ -101,12 +101,20 @@ async function loadTargets() {
 
 		const element = document.createElement("a");
 		element.classList.add(kind, id);
-		element.innerHTML = `<strong>${title}</strong>
-<code>${id}</code>`;
+		if (title) {
+			const node = document.createElement("strong");
+			node.innerText = title;
+			element.appendChild(node);
+		}
+		{
+			const node = document.createElement("code");
+			node.innerText = id;
+			element.appendChild(node);
+		}
 		if (descriptionText) {
-			const d = document.createElement("div");
-			d.innerText = descriptionText;
-			element.appendChild(d);
+			const node = document.createElement("div");
+			node.innerText = descriptionText;
+			element.appendChild(node);
 		}
 		setImageAsBackground(element, id);
 		element.addEventListener("click", async () => {
