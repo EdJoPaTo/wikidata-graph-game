@@ -103,6 +103,7 @@ async function loadTargets() {
 		const descriptionText = bestEffortDescription(item, languageSelect.value);
 
 		const element = document.createElement("a");
+		element.href = "#";
 		element.classList.add(kind, id);
 		if (title) {
 			const node = document.createElement("strong");
