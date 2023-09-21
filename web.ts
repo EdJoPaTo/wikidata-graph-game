@@ -15,17 +15,20 @@ import {
 } from "./web-helper.ts";
 import * as store from "./store.ts";
 
+const clearCacheButton = document.querySelector(
+	"#clearcache",
+) as HTMLInputElement;
 const hintButton = document.querySelector("#hint") as HTMLInputElement;
+const ingameHeading = document.querySelector("#ingame h2") as HTMLElement;
+const ingameInputs = document.querySelector("#ingame .inputs") as HTMLElement;
 const languageSelect = document.querySelector("#language") as HTMLSelectElement;
 const restartButton = document.querySelector("#restart") as HTMLInputElement;
 const searchInput = document.querySelector("#search") as HTMLInputElement;
 const searchResults = document.querySelector("#searchresults") as HTMLElement;
+const viewIngame = document.querySelector("#ingame") as HTMLElement;
 const viewTargetselection = document.querySelector(
 	"#targetselection",
 ) as HTMLElement;
-const viewIngame = document.querySelector("#ingame") as HTMLElement;
-const ingameInputs = document.querySelector("#ingame .inputs") as HTMLElement;
-const ingameHeading = document.querySelector("#ingame h2") as HTMLElement;
 
 restartButton.addEventListener("click", () => window.location.reload());
 document.querySelector("header > a")!.addEventListener(
@@ -33,8 +36,9 @@ document.querySelector("header > a")!.addEventListener(
 	() => window.location.reload(),
 );
 
-document.querySelector("#clearcache")!.addEventListener("click", () => {
+clearCacheButton.addEventListener("click", async () => {
 	store.clear();
+	await updateLabels();
 });
 
 function updateIngameHeading() {
@@ -51,19 +55,31 @@ languageSelect.innerHTML = wikimediaLanguageCodes.map((o) =>
 languageSelect.value =
 	validLanguage(new URL(window.location.href).searchParams.get("lang")) ??
 		validLanguage(navigator.language) ?? "en";
-languageSelect.addEventListener("change", () => {
+languageSelect.addEventListener("change", async () => {
+	await updateLabels();
+
 	const lang = languageSelect.value;
 	searchInput.lang = lang;
-
-	loadTargets();
-	onSearch();
-	updateGraph();
-	updateIngameHeading();
-
 	const url = new URL(window.location.href);
 	url.searchParams.set("lang", lang);
 	window.history.pushState({ path: url.toString() }, "", url);
 });
+async function updateLabels(): Promise<void> {
+	searchInput.disabled =
+		languageSelect.disabled =
+		clearCacheButton.disabled =
+			true;
+	await Promise.all([
+		loadTargets(),
+		onSearch(),
+		updateGraph(),
+	]);
+	updateIngameHeading();
+	searchInput.disabled =
+		languageSelect.disabled =
+		clearCacheButton.disabled =
+			false;
+}
 
 type DrawDiagramFunction = (graphDefinition: string) => Promise<void> | void;
 let drawDiagram: DrawDiagramFunction = () => {
