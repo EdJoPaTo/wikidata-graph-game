@@ -40,7 +40,7 @@ export function getInterestingNodes<T>(
 		relevantLinks.filter(([_a, b]) => node === b).length !== 1
 	);
 
-	// Prevent duplicates and ensure
+	// Prevent duplicates and ensure no start / targets in output
 	const result = new Set(branches);
 	result.delete(start);
 	for (const o of relevantTargets) result.delete(o);
