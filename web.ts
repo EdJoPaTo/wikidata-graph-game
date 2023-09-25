@@ -5,6 +5,7 @@ import {
 } from "https://esm.sh/wikibase-sdk@9.2.2";
 import { bestEffortDescription, bestEffortLabel } from "./simplify-item.ts";
 import { GameState } from "./game-state.ts";
+import { getInterestingNodes } from "./parent-graph.ts";
 import { getTarget, TARGET_GROUPS, TargetKind } from "./gametargets.ts";
 import { randomItem } from "./helpers.ts";
 import { search as wikidataSearch } from "./wikidata-search.ts";
@@ -190,7 +191,13 @@ async function onSearch() {
 
 	showLoading(true);
 	const results = await wikidataSearch(value, languageSelect.value);
+	const interesting = getInterestingNodes(
+		gamestate.getAllParentLinks(),
+		gamestate.target,
+		[...gamestate.guesses],
+	);
 	const relevantResults = results
+		.filter((o) => !interesting.has(o.id))
 		.filter((o) => !gamestate.guesses.has(o.id));
 
 	searchResults.replaceChildren(...relevantResults
