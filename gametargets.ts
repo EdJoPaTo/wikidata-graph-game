@@ -13,6 +13,7 @@ export const TARGET_GROUPS = [
 	["class", "Q11460"], // clothing
 	["class", "Q2095"], // Food
 	["class", "Q28877"], // goods
+	["class", "Q327055"], // worker
 	["class", "Q34379"], // Musical instrument
 	["class", "Q42889"], // Vehicle
 	["class", "Q712378"], // Organ
