@@ -20,7 +20,11 @@ export async function cache(ids: readonly ItemId[]): Promise<ItemId[]> {
 		.filter((o): o is Item => o.type === "item")
 		.filter(arrayFilterUnique((o) => o.id));
 	for (const entity of items) {
-		localStorage.setItem(entity.id, JSON.stringify(simplify(entity)));
+		const simplified = JSON.stringify(simplify(entity));
+		localStorage.setItem(entity.id, simplified);
+		if (entity.redirects?.from) {
+			localStorage.setItem(entity.redirects.from, simplified);
+		}
 	}
 
 	return missing;
