@@ -1,4 +1,5 @@
-import { assertEquals } from "https://deno.land/std@0.211.0/assert/mod.ts";
+import { deepStrictEqual } from "node:assert";
+import { test } from "node:test";
 import { LINKS } from "./dijkstra.test.ts";
 import { Graph } from "./graph.ts";
 import { getInterestingNodes } from "./parent-graph.ts";
@@ -20,14 +21,14 @@ export function generateD2(highlights: readonly number[]): void {
 
 // generateD2(intnod(3, [8, 10, 11]));
 
-Deno.test("3 -> 8", () => {
-	assertEquals(intnod(3, [8]), [2]);
+test("3 -> 8", () => {
+	deepStrictEqual(intnod(3, [8]), [2]);
 });
 
-Deno.test("3 -> 8, 10", () => {
-	assertEquals(intnod(3, [8, 10]), [2, 6]);
+test("3 -> 8, 10", () => {
+	deepStrictEqual(intnod(3, [8, 10]), [2, 6]);
 });
 
-Deno.test("3 -> 8, 10, 11", () => {
-	assertEquals(intnod(3, [8, 10, 11]), [2, 6, 9]);
+test("3 -> 8, 10, 11", () => {
+	deepStrictEqual(intnod(3, [8, 10, 11]), [2, 6, 9]);
 });
