@@ -3,18 +3,18 @@ import {
 	type ItemId,
 	wikimediaLanguageCodes,
 } from "https://esm.sh/wikibase-sdk@9.2.2";
-import { bestEffortDescription, bestEffortLabel } from "./simplify-item.ts";
 import { GameState } from "./game-state.ts";
-import { getInterestingNodes } from "./parent-graph.ts";
 import { getTarget, TARGET_GROUPS, TargetKind } from "./gametargets.ts";
 import { randomItem } from "./helpers.ts";
-import { search as wikidataSearch } from "./wikidata-search.ts";
+import { getInterestingNodes } from "./parent-graph.ts";
+import { bestEffortDescription, bestEffortLabel } from "./simplify-item.ts";
+import * as store from "./store.ts";
 import {
 	setImageAsBackground,
 	showLoading,
 	validLanguage,
 } from "./web-helper.ts";
-import * as store from "./store.ts";
+import { search as wikidataSearch } from "./wikidata-search.ts";
 
 const clearCacheButton = document.querySelector(
 	"#clearcache",

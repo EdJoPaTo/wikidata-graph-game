@@ -1,9 +1,9 @@
 import type { ItemId } from "https://esm.sh/wikibase-sdk@9.2.2";
-import { bestEffortLabel, getItemParents } from "./simplify-item.ts";
 import { getClosestParents, getParentsCloserThanDistance } from "./dijkstra.ts";
-import { getIndirectParents } from "./queries.ts";
-import { getInterestingNodes } from "./parent-graph.ts";
 import { Graph } from "./graph.ts";
+import { getInterestingNodes } from "./parent-graph.ts";
+import { getIndirectParents } from "./queries.ts";
+import { bestEffortLabel, getItemParents } from "./simplify-item.ts";
 import * as store from "./store.ts";
 
 export class GameState {

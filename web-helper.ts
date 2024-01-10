@@ -3,8 +3,8 @@ import {
 	type ItemId,
 	wikimediaLanguageCodes,
 } from "https://esm.sh/wikibase-sdk@9.2.2";
-import { getCached } from "./store.ts";
 import { shortLang } from "./simplify-item.ts";
+import { getCached } from "./store.ts";
 
 export function validLanguage(
 	input: string | undefined | null,

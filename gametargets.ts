@@ -1,6 +1,6 @@
 import type { ItemId } from "https://esm.sh/wikibase-sdk@9.2.2";
-import { getDeepSubclassOf, getTaxon } from "./queries.ts";
 import { randomItem, unreachable } from "./helpers.ts";
+import { getDeepSubclassOf, getTaxon } from "./queries.ts";
 
 export type TargetKind = "taxon" | "class";
 

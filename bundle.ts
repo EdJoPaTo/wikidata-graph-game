@@ -1,4 +1,4 @@
-import { bundle } from "https://deno.land/x/emit@0.27.0/mod.ts";
+import { bundle } from "https://deno.land/x/emit@0.31.4/mod.ts";
 
 const { code } = await bundle("web.ts", {
 	compilerOptions: {

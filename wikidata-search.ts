@@ -3,8 +3,8 @@ import {
 	type ItemId,
 	type SearchResponse,
 } from "https://esm.sh/wikibase-sdk@9.2.2";
-import { cache, getCached } from "./store.ts";
 import { getItemParents } from "./simplify-item.ts";
+import { cache, getCached } from "./store.ts";
 import { headers, wdk } from "./wikidata.ts";
 
 interface RelevantSearchResult {

@@ -1,7 +1,7 @@
-import { assertEquals } from "https://deno.land/std@0.201.0/assert/mod.ts";
-import { getInterestingNodes } from "./parent-graph.ts";
-import { Graph } from "./graph.ts";
+import { assertEquals } from "https://deno.land/std@0.211.0/assert/mod.ts";
 import { LINKS } from "./dijkstra.test.ts";
+import { Graph } from "./graph.ts";
+import { getInterestingNodes } from "./parent-graph.ts";
 
 const intnod = (start: number, targets: number[]) =>
 	[...getInterestingNodes(LINKS, start, targets)].sort();
