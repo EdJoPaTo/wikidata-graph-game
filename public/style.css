@@ -34,7 +34,6 @@ header, main {
 
 a {
 	color: inherit;
-	text-decoration: inherit;
 }
 
 header .about {
@@ -59,7 +58,6 @@ footer {
 footer a {
 	margin: 0 0.2rem;
 	opacity: 0.5;
-	text-decoration: none;
 	transition: opacity ease 0.2s;
 }
 
@@ -86,6 +84,10 @@ input[type=search] {
 	gap: 10px;
 	justify-content: space-evenly;
 	margin: 10px 0;
+}
+
+.wdItemList a {
+	text-decoration: none;
 }
 
 .wdItemList > * {
