@@ -1,5 +1,5 @@
-import { arrayFilterUnique } from "https://esm.sh/array-filter-unique@^3";
-import type { Item, ItemId } from "https://esm.sh/wikibase-sdk@9.2.2";
+import { arrayFilterUnique } from "https://deno.land/x/array_filter_unique@v3.1.0/mod.ts";
+import type { Item, ItemId } from "https://esm.sh/wikibase-sdk@9.2.4";
 import { type SimplifiedItem, simplify } from "./simplify-item.ts";
 import { getEntities } from "./wikidata.ts";
 

@@ -2,7 +2,7 @@ import {
 	isItemId,
 	type ItemId,
 	wikimediaLanguageCodes,
-} from "https://esm.sh/wikibase-sdk@9.2.2";
+} from "https://esm.sh/wikibase-sdk@9.2.4";
 import { GameState } from "./game-state.ts";
 import { getTarget, TARGET_GROUPS, TargetKind } from "./gametargets.ts";
 import { randomItem } from "./helpers.ts";

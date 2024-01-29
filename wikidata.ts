@@ -4,7 +4,7 @@ import {
 	simplifySparqlResults,
 	type SparqlResults,
 	WBK,
-} from "https://esm.sh/wikibase-sdk@9.2.2";
+} from "https://esm.sh/wikibase-sdk@9.2.4";
 
 const USER_AGENT = "github.com/EdJoPaTo/wikidata-graph-game";
 export const headers = new Headers();

@@ -1,4 +1,4 @@
-import type { ItemId } from "https://esm.sh/wikibase-sdk@9.2.2";
+import type { ItemId } from "https://esm.sh/wikibase-sdk@9.2.4";
 import { randomItem, unreachable } from "./helpers.ts";
 import { getDeepSubclassOf, getTaxon } from "./queries.ts";
 

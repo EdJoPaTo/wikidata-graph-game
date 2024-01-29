@@ -8,7 +8,7 @@ import {
 	type Term,
 	truthyPropertyClaims,
 	type WikibaseEntityIdSnakValue,
-} from "https://esm.sh/wikibase-sdk@9.2.2";
+} from "https://esm.sh/wikibase-sdk@9.2.4";
 
 export interface SimplifiedItem {
 	readonly timestamp: number;
@@ -21,10 +21,14 @@ export interface SimplifiedItem {
 	readonly taxonName: readonly string[];
 }
 
-function flatTerms(terms: Record<string, Term>): Record<string, string> {
+function flatTerms(
+	terms: Readonly<Record<string, Term | undefined>>,
+): Record<string, string> {
 	const result: Record<string, string> = {};
 	for (const [lang, term] of Object.entries(terms)) {
-		result[lang] = term.value;
+		if (term) {
+			result[lang] = term.value;
+		}
 	}
 
 	return result;

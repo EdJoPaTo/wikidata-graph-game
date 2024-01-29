@@ -2,7 +2,7 @@ import {
 	getImageUrl,
 	type ItemId,
 	wikimediaLanguageCodes,
-} from "https://esm.sh/wikibase-sdk@9.2.2";
+} from "https://esm.sh/wikibase-sdk@9.2.4";
 import { shortLang } from "./simplify-item.ts";
 import { getCached } from "./store.ts";
 
