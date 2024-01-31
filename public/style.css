@@ -86,25 +86,23 @@ input[type=search] {
 	margin: 10px 0;
 }
 
-.wdItemList a {
-	text-decoration: none;
-}
-
-.wdItemList > * {
+wd-item > * {
 	align-items: center;
 	background-position: center;
 	background-size: cover;
 	border-radius: 15px;
 	border: gray solid 1px;
+	cursor: pointer;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-evenly;
 	min-height: 15vh;
 	overflow: hidden;
+	text-decoration: none;
 	width: 450px;
 }
 
-.wdItemList > * > * {
+wd-item > * > * {
 	border-radius: 0.2rem;
 	padding: 0.2rem;
 

@@ -1,10 +1,5 @@
-import {
-	getImageUrl,
-	type ItemId,
-	wikimediaLanguageCodes,
-} from "https://esm.sh/wikibase-sdk@9.2.4";
+import { wikimediaLanguageCodes } from "https://esm.sh/wikibase-sdk@9.2.4";
 import { shortLang } from "./simplify-item.ts";
-import { getCached } from "./store.ts";
 
 export function validLanguage(
 	input: string | undefined | null,
@@ -18,14 +13,6 @@ export function validLanguage(
 		return short;
 	}
 	return undefined;
-}
-
-export function setImageAsBackground(element: HTMLElement, id: ItemId): void {
-	const item = getCached(id);
-	const image = item.images[0];
-	if (image) {
-		element.style.backgroundImage = 'url("' + getImageUrl(image, 450) + '")';
-	}
 }
 
 export function showLoading(state: boolean): void {

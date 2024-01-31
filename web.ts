@@ -7,13 +7,10 @@ import { GameState } from "./game-state.ts";
 import { getTarget, TARGET_GROUPS, TargetKind } from "./gametargets.ts";
 import { randomItem } from "./helpers.ts";
 import { getInterestingNodes } from "./parent-graph.ts";
-import { bestEffortDescription, bestEffortLabel } from "./simplify-item.ts";
+import { bestEffortLabel } from "./simplify-item.ts";
 import * as store from "./store.ts";
-import {
-	setImageAsBackground,
-	showLoading,
-	validLanguage,
-} from "./web-helper.ts";
+import { WdItem } from "./wd-item.ts";
+import { showLoading, validLanguage } from "./web-helper.ts";
 import { search as wikidataSearch } from "./wikidata-search.ts";
 
 const clearCacheButton = document.querySelector(
@@ -99,32 +96,11 @@ async function loadTargets() {
 
 	const targets = document.querySelector("#targets") as HTMLElement;
 	targets.replaceChildren(...TARGET_GROUPS.map(([kind, id]) => {
-		const item = store.getCached(id);
-		const title = bestEffortLabel(item, languageSelect.value);
-		const descriptionText = bestEffortDescription(item, languageSelect.value);
-
-		const element = document.createElement("a");
-		element.href = "#";
+		const element = new WdItem();
+		element.setAttribute("lang", languageSelect.value);
+		element.setAttribute("item-id", id);
 		element.classList.add(kind, id);
-		if (title) {
-			const node = document.createElement("strong");
-			node.innerText = title;
-			element.appendChild(node);
-		}
-		{
-			const node = document.createElement("code");
-			node.innerText = id;
-			element.appendChild(node);
-		}
-		if (descriptionText) {
-			const node = document.createElement("div");
-			node.innerText = descriptionText;
-			element.appendChild(node);
-		}
-		setImageAsBackground(element, id);
-		element.addEventListener("click", async () => {
-			await beginGame(kind, id);
-		});
+		element.addEventListener("click", () => beginGame(kind, id));
 		return element;
 	}));
 
@@ -197,19 +173,15 @@ async function onSearch() {
 		[...gamestate.guesses],
 	);
 	const relevantResults = results
-		.filter((o) => !interesting.has(o.id))
-		.filter((o) => !gamestate.guesses.has(o.id));
+		.filter((id) => !interesting.has(id))
+		.filter((id) => !gamestate.guesses.has(id));
 
 	searchResults.replaceChildren(...relevantResults
-		.map(({ id, taxonName, label, description }) => {
-			const title = taxonName ? `${taxonName} (${label})` : label;
-			const element = document.createElement("a");
-			element.href = "#";
+		.map((id) => {
+			const element = new WdItem();
+			element.setAttribute("lang", languageSelect.value);
+			element.setAttribute("item-id", id);
 			element.classList.add(id);
-			element.innerHTML = `<strong>${title}</strong>
-<code>${id}</code>
-<div>${description}</div>`;
-			setImageAsBackground(element, id);
 			element.addEventListener("click", async () => {
 				gamestate.addGuess(id);
 				searchResults.innerHTML = "";

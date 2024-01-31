@@ -7,17 +7,10 @@ import { getItemParents } from "./simplify-item.ts";
 import { cache, getCached } from "./store.ts";
 import { headers, wdk } from "./wikidata.ts";
 
-interface RelevantSearchResult {
-	id: ItemId;
-	taxonName?: string;
-	label: string;
-	description?: string;
-}
-
 export async function search(
 	search: string,
 	language: string,
-): Promise<RelevantSearchResult[]> {
+): Promise<ItemId[]> {
 	const url = wdk.searchEntities({
 		search: `${search}`,
 		language,
@@ -29,18 +22,8 @@ export async function search(
 	const itemIds = results.map((o) => o.id).filter(isItemId);
 	await cache(itemIds);
 
-	const relevant = results.map((o): RelevantSearchResult | undefined => {
-		const id = o.id;
-		if (!isItemId(id)) return undefined;
+	return itemIds.filter((id) => {
 		const item = getCached(id);
-		if (getItemParents(item).length === 0) return undefined;
-		return {
-			id,
-			taxonName: item.taxonName[0],
-			label: o.label,
-			description: o.description,
-		};
-	}).filter((o): o is RelevantSearchResult => o !== undefined);
-
-	return relevant;
+		return getItemParents(item).length > 0;
+	});
 }
