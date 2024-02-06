@@ -5,4 +5,5 @@
 *.png
 *.svg
 parent-graph.json
+public/*.js.map
 public/logic.js
