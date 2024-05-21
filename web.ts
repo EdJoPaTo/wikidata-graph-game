@@ -156,6 +156,8 @@ hintButton.addEventListener("click", async () => {
 	if (hints.length === 0) return;
 	const hint = randomItem(hints);
 	gamestate.addGuess(hint);
+	searchInput.value = "";
+	searchResults.innerHTML = "";
 	await updateGraph();
 });
 
