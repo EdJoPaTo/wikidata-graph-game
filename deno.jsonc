@@ -4,25 +4,19 @@
 	// https://www.typescriptlang.org/tsconfig/
 	"compilerOptions": {
 		"lib": ["dom", "dom.iterable", "dom.asynciterable", "deno.ns"],
-		"noFallthroughCasesInSwitch": true,
 		"noImplicitOverride": true,
 		"noImplicitReturns": true,
 		"noPropertyAccessFromIndexSignature": true,
 		"noUncheckedIndexedAccess": true,
-		"noUnusedLocals": true,
-		"noUnusedParameters": true,
 		"useUnknownInCatchVariables": true
 	},
+	"exclude": [
+		"public/logic.js"
+	],
 	"fmt": {
-		"exclude": [
-			"public/logic.js"
-		],
 		"useTabs": true
 	},
 	"lint": {
-		"exclude": [
-			"public/logic.js"
-		],
 		"rules": {
 			// https://lint.deno.land/?all=on
 			"include": [
@@ -31,7 +25,11 @@
 				"eqeqeq",
 				"explicit-module-boundary-types",
 				"no-await-in-loop",
-				"no-eval"
+				"no-eval",
+				"no-non-null-asserted-optional-chain",
+				"no-slow-types",
+				"no-sparse-arrays",
+				"verbatim-module-syntax"
 			]
 		}
 	}

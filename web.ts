@@ -4,7 +4,7 @@ import {
 	wikimediaLanguageCodes,
 } from "https://esm.sh/wikibase-sdk@9.2.4";
 import { GameState } from "./game-state.ts";
-import { getTarget, TARGET_GROUPS, TargetKind } from "./gametargets.ts";
+import { getTarget, TARGET_GROUPS, type TargetKind } from "./gametargets.ts";
 import { randomItem } from "./helpers.ts";
 import { getInterestingNodes } from "./parent-graph.ts";
 import { bestEffortLabel } from "./simplify-item.ts";
