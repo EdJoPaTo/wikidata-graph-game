@@ -1,4 +1,4 @@
-import { bundle } from "https://deno.land/x/emit@0.34.0/mod.ts";
+import { bundle } from "jsr:@deno/emit@0.40";
 
 const { code, map } = await bundle("web.ts", {
 	minify: true,
