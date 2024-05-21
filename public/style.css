@@ -7,6 +7,10 @@ body {
 	padding: 0;
 }
 
+a {
+	color: inherit;
+}
+
 html {
 	background-color: whitesmoke;
 	@media (prefers-color-scheme: dark) {
@@ -19,7 +23,7 @@ body {
 	flex-direction: column;
 	justify-content: space-between;
 	line-height: 1.5;
-	min-height: 100vh;
+	min-height: 100dvh;
 	text-align: center;
 
 	color: black;
@@ -30,10 +34,6 @@ body {
 
 header, main {
 	padding: 0 7px;
-}
-
-a {
-	color: inherit;
 }
 
 header .about {
