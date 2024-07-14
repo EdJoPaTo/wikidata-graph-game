@@ -13,8 +13,7 @@
       "jsr:@std/fs@^0.218.2": "jsr:@std/fs@0.218.2",
       "jsr:@std/io@^0.218.2": "jsr:@std/io@0.218.2",
       "jsr:@std/path@^0.218.2": "jsr:@std/path@0.218.2",
-      "jsr:@std/path@^0.223.0": "jsr:@std/path@0.223.0",
-      "npm:@types/node": "npm:@types/node@18.16.19"
+      "jsr:@std/path@^0.223.0": "jsr:@std/path@0.223.0"
     },
     "jsr": {
       "@deno/cache-dir@0.8.0": {
@@ -74,15 +73,10 @@
           "jsr:@std/assert@^0.223.0"
         ]
       }
-    },
-    "npm": {
-      "@types/node@18.16.19": {
-        "integrity": "sha512-IXl7o+R9iti9eBW4Wg2hx1xQDig183jj7YLn8F7udNceyfkbn1ZxmzZXuak20gR40D7pIkIY1kYGx5VIGbaHKA==",
-        "dependencies": {}
-      }
     }
   },
   "remote": {
+    "https://esm.sh/v135/wikibase-sdk@9.2.4/denonext/wikibase-sdk.mjs": "6777600c76a0d7c00af8364525442085ba1d1349aae955a1853df3f18d25564f",
     "https://esm.sh/wikibase-sdk@9.2.4": "269068b68ee4133680cb9a18263331ed749d764d9fdece88d9448548819ea3c1"
   }
 }
