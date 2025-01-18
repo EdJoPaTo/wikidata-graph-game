@@ -14,10 +14,15 @@
 		"public/logic.js"
 	],
 	"fmt": {
+		"exclude": ["**/*.html"],
+		"proseWrap": "preserve",
 		"useTabs": true
 	},
 	"lint": {
 		"rules": {
+			"exclude": [
+				"no-window"
+			],
 			// https://lint.deno.land/?all=on
 			"include": [
 				"camelcase",
