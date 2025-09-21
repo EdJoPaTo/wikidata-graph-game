@@ -8,7 +8,7 @@ import {
 	type Term,
 	truthyPropertyClaims,
 	type WikibaseEntityIdSnakValue,
-} from "https://esm.sh/wikibase-sdk@9.2.4";
+} from "wikibase-sdk";
 
 export interface SimplifiedItem {
 	readonly timestamp: number;

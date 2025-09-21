@@ -1,8 +1,4 @@
-import {
-	isItemId,
-	type ItemId,
-	type SearchResponse,
-} from "https://esm.sh/wikibase-sdk@9.2.4";
+import { isItemId, type ItemId, type SearchResponse } from "wikibase-sdk";
 import { getItemParents } from "./simplify-item.ts";
 import { cache, getCached } from "./store.ts";
 import { headers, wdk } from "./wikidata.ts";

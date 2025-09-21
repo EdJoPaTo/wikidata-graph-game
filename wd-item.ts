@@ -1,8 +1,4 @@
-import {
-	getImageUrl,
-	isItemId,
-	type ItemId,
-} from "https://esm.sh/wikibase-sdk@9.2.4";
+import { getImageUrl, isItemId, type ItemId } from "wikibase-sdk";
 import { bestEffortDescription, bestEffortLabel } from "./simplify-item.ts";
 import { getCached } from "./store.ts";
 

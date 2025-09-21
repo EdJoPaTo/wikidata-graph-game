@@ -1,8 +1,4 @@
-import {
-	isItemId,
-	type ItemId,
-	wikimediaLanguageCodes,
-} from "https://esm.sh/wikibase-sdk@9.2.4";
+import { isItemId, type ItemId, wikimediaLanguageCodes } from "wikibase-sdk";
 import { GameState } from "./game-state.ts";
 import { getTarget, TARGET_GROUPS, type TargetKind } from "./gametargets.ts";
 import { randomItem } from "./helpers.ts";

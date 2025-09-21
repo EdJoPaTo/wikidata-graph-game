@@ -1,3 +1,4 @@
+// deno-lint-ignore no-import-prefix -- Evaluated on web
 import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
 import { init } from "./logic.js";
 

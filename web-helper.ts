@@ -1,4 +1,4 @@
-import { wikimediaLanguageCodes } from "https://esm.sh/wikibase-sdk@9.2.4";
+import { wikimediaLanguageCodes } from "wikibase-sdk";
 import { shortLang } from "./simplify-item.ts";
 
 export function validLanguage(

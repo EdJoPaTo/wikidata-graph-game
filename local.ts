@@ -1,4 +1,4 @@
-import type { ItemId } from "https://esm.sh/wikibase-sdk@9.2.4";
+import type { ItemId } from "wikibase-sdk";
 import { GameState } from "./game-state.ts";
 
 const TARGET = "Q83483"; // sea urchin

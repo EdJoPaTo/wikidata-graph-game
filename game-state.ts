@@ -1,4 +1,4 @@
-import type { ItemId } from "https://esm.sh/wikibase-sdk@9.2.4";
+import type { ItemId } from "wikibase-sdk";
 import { getClosestParents, getParentsCloserThanDistance } from "./dijkstra.ts";
 import { Graph } from "./graph.ts";
 import { getInterestingNodes } from "./parent-graph.ts";

@@ -37,5 +37,9 @@
 				"verbatim-module-syntax"
 			]
 		}
+	},
+	"imports": {
+		"array-filter-unique": "jsr:@edjopato/array-filter-unique@3",
+		"wikibase-sdk": "https://esm.sh/wikibase-sdk@9.2.4"
 	}
 }

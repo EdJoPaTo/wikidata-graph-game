@@ -1,4 +1,4 @@
-import type { ItemId } from "https://esm.sh/wikibase-sdk@9.2.4";
+import type { ItemId } from "wikibase-sdk";
 import { sparqlQuerySimplifiedMinified } from "./wikidata.ts";
 
 export async function getIndirectParents(itemId: ItemId): Promise<ItemId[]> {
