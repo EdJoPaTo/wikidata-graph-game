@@ -11,7 +11,7 @@ Go to <https://wikidata-graph-game.edjopato.de>.
 Start the following two processes (probably in different tabs / shells):
 
 ```bash
-deno run -A --watch=web.ts bundle.ts
+deno bundle --watch --output=public/logic.js web.ts
 
 cd public && python -m http.server --bind localhost
 ```

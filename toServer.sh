@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 set -eux
 
-deno run -A bundle.ts
+deno bundle \
+	--minify \
+	--output=public/logic.js \
+	--sourcemap \
+	web.ts
 
 rsync \
 	--checksum \
