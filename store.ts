@@ -1,5 +1,5 @@
 import { arrayFilterUnique } from "array-filter-unique";
-import type { Item, ItemId } from "wikibase-sdk";
+import type { ItemId } from "wikibase-sdk";
 import { type SimplifiedItem, simplify } from "./simplify-item.ts";
 import { getEntities } from "./wikidata.ts";
 
@@ -17,7 +17,7 @@ export async function cache(ids: readonly ItemId[]): Promise<ItemId[]> {
 
 	const entities = await getEntities(missing);
 	const items = Object.values(entities)
-		.filter((o): o is Item => o.type === "item")
+		.filter((o) => o.type === "item")
 		.filter(arrayFilterUnique((o) => o.id));
 	for (const entity of items) {
 		const simplified = JSON.stringify(simplify(entity));

@@ -4,10 +4,8 @@ import {
 	type ItemId,
 	type PropertyId,
 	type SnakValue,
-	type StringSnakValue,
 	type Term,
 	truthyPropertyClaims,
-	type WikibaseEntityIdSnakValue,
 } from "wikibase-sdk";
 
 export interface SimplifiedItem {
@@ -57,17 +55,15 @@ function claimValues(item: Item, claim: PropertyId): SnakValue[] {
 
 function stringSnaks(values: readonly SnakValue[]): string[] {
 	return values
-		.filter((o): o is StringSnakValue => o.type === "string")
+		.filter((o) => o.type === "string")
 		.map((o) => o.value);
 }
 
 function itemSnaks(values: readonly SnakValue[]): ItemId[] {
 	return values
-		.filter((o): o is WikibaseEntityIdSnakValue =>
-			o.type === "wikibase-entityid"
-		)
+		.filter((o) => o.type === "wikibase-entityid")
 		.map((o) => o.value.id)
-		.filter((o): o is ItemId => isItemId(o));
+		.filter((o) => isItemId(o));
 }
 
 export function getItemParents(item: SimplifiedItem): readonly ItemId[] {
