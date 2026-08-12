@@ -5,7 +5,7 @@ deno bundle \
 	--minify \
 	--output=public/logic.js \
 	--sourcemap \
-	web.ts
+	source/web.ts
 
 rsync \
 	--checksum \

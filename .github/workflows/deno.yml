@@ -27,8 +27,8 @@ jobs:
           deno-version: v2.x
       - uses: actions/checkout@v7
 
-      - run: deno cache *.ts
-      - run: deno check *.ts
+      - run: deno cache **/*.ts
+      - run: deno check **/*.ts
 
   test:
     runs-on: ubuntu-latest
@@ -39,5 +39,5 @@ jobs:
           deno-version: v2.x
       - uses: actions/checkout@v7
 
-      - run: deno cache *.ts
+      - run: deno cache **/*.ts
       - run: deno test --no-check
