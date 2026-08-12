@@ -4,13 +4,14 @@
 	// https://www.typescriptlang.org/tsconfig/
 	"compilerOptions": {
 		"lib": ["dom", "dom.iterable", "dom.asynciterable", "deno.ns"],
-		"noImplicitOverride": true,
 		"noImplicitReturns": true,
 		"noPropertyAccessFromIndexSignature": true,
-		"noUncheckedIndexedAccess": true,
-		"useUnknownInCatchVariables": true
+		"noUncheckedIndexedAccess": true
 	},
 	"exclude": [
+		"./coverage/",
+		"./docs/",
+		"./node_modules/",
 		"public/logic.js"
 	],
 	"fmt": {
@@ -18,12 +19,20 @@
 		"proseWrap": "preserve",
 		"useTabs": true
 	},
+	"imports": {
+		"array-filter-unique": "jsr:@edjopato/array-filter-unique@3",
+		"wikibase-sdk": "https://esm.sh/wikibase-sdk@9.2.4"
+	},
 	"lint": {
 		"rules": {
+			// https://lint.deno.land/?all=on
+			"tags": [
+				"recommended",
+				"workspace"
+			],
 			"exclude": [
 				"no-window"
 			],
-			// https://lint.deno.land/?all=on
 			"include": [
 				"camelcase",
 				"default-param-last",
@@ -31,15 +40,19 @@
 				"explicit-module-boundary-types",
 				"no-await-in-loop",
 				"no-eval",
+				"no-inferrable-types",
+				"no-node-globals",
 				"no-non-null-asserted-optional-chain",
+				"no-process-global",
+				"no-self-compare",
 				"no-slow-types",
 				"no-sparse-arrays",
+				"no-sync-fn-in-async-fn",
+				"no-useless-rename",
+				"single-var-declarator",
+				"triple-slash-reference",
 				"verbatim-module-syntax"
 			]
 		}
-	},
-	"imports": {
-		"array-filter-unique": "jsr:@edjopato/array-filter-unique@3",
-		"wikibase-sdk": "https://esm.sh/wikibase-sdk@9.2.4"
 	}
 }

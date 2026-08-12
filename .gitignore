@@ -1,4 +1,7 @@
 .vscode
+coverage
+docs
+node_modules
 
 *.d2
 *.mermaid
