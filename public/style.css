@@ -23,11 +23,6 @@ body {
 	line-height: 1.5;
 	min-height: 100dvh;
 	text-align: center;
-
-	color: black;
-	@media (prefers-color-scheme: dark) {
-		color: whitesmoke;
-	}
 }
 
 header, main {
