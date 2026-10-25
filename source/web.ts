@@ -153,14 +153,14 @@ hintButton.addEventListener("click", async () => {
 	const hint = randomItem(hints);
 	gamestate.addGuess(hint);
 	searchInput.value = "";
-	searchResults.innerHTML = "";
+	searchResults.innerText = "";
 	await updateGraph();
 });
 
 searchInput.addEventListener("change", onSearch);
 async function onSearch() {
 	const { value } = searchInput;
-	searchResults.innerHTML = "";
+	searchResults.innerText = "";
 	if (!value) return;
 
 	showLoading(true);
@@ -182,7 +182,7 @@ async function onSearch() {
 			element.classList.add(id);
 			element.addEventListener("click", async () => {
 				gamestate.addGuess(id);
-				searchResults.innerHTML = "";
+				searchResults.innerText = "";
 				searchInput.value = "";
 				await updateGraph();
 			});
