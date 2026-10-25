@@ -17,6 +17,7 @@ export async function getDeepSubclassOf(superclass: ItemId): Promise<ItemId[]> {
 	const query = `SELECT ?item WHERE {
 		?item wdt:P279+ wd:${superclass}.
 		FILTER EXISTS {?item wdt:P18 ?image}.
+		FILTER EXISTS {?other wdt:P279 ?item}.
 	}`;
 
 	const results = await sparqlQuerySimplifiedMinified(query) as ItemId[];
