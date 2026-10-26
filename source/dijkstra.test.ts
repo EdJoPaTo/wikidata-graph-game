@@ -1,4 +1,5 @@
 import { deepStrictEqual } from "node:assert";
+import { writeFileSync } from "node:fs";
 import { test } from "node:test";
 import {
 	dijkstra,
@@ -29,7 +30,7 @@ export function generateD2(): void {
 		graph.addLink(String(start), String(end));
 	}
 	const content = graph.buildD2();
-	Deno.writeTextFileSync("dijkstra.test.d2", content);
+	writeFileSync("dijkstra.test.d2", content);
 }
 
 test("dijkstra 1", () => {

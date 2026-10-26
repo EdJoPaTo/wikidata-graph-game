@@ -1,4 +1,5 @@
 import { deepStrictEqual } from "node:assert";
+import { writeFileSync } from "node:fs";
 import { test } from "node:test";
 import { LINKS } from "./dijkstra.test.ts";
 import { Graph } from "./graph.ts";
@@ -16,7 +17,7 @@ export function generateD2(highlights: readonly number[]): void {
 		graph.setShape(String(node), "guess");
 	}
 	const content = graph.buildD2();
-	Deno.writeTextFileSync("parent-graph.test.d2", content);
+	writeFileSync("parent-graph.test.d2", content);
 }
 
 // generateD2(intnod(3, [8, 10, 11]));

@@ -29,7 +29,7 @@ export function getInterestingNodes<T>(
 
 	// 	return { node, incoming, outgoing, label };
 	// });
-	// Deno.writeTextFileSync(
+	// writeFileSync(
 	// 	"parent-graph.json",
 	// 	JSON.stringify(debug, undefined, "\t") + "\n",
 	// );

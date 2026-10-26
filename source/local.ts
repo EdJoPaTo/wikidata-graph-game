@@ -1,3 +1,4 @@
+import { writeFileSync } from "node:fs";
 import type { ItemId } from "wikibase-sdk";
 import { GameState } from "./game-state.ts";
 
@@ -49,4 +50,4 @@ await gamestate.cache();
 const graph = gamestate.graph("de");
 console.log("hints", gamestate.hints());
 
-Deno.writeTextFileSync("graph.d2", graph.buildD2());
+writeFileSync("graph.d2", graph.buildD2());
